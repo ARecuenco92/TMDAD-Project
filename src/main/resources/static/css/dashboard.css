@@ -191,6 +191,16 @@ body {
   overflow-y: scroll;
 }
 
+#timelineTwitter{
+  background-color: rgba(85, 172, 238, 0.3);
+  display: block;
+}
+
+#timelineFacebook{
+  background-color: rgba(59, 89, 152, 0.7);
+  display: none;
+}
+
 .panel-tweet{
   margin-bottom:10px !important;
 }
@@ -213,4 +223,49 @@ body {
   width: 28px;
   height: 28px;
   margin-right:10px;
+}
+
+/*Panel tabs*/
+.panel-timeline {
+	padding:0px !important;
+}
+
+.panel-tabs {
+    position: relative;
+    clear:both;
+    border-bottom: 1px solid transparent;
+}
+
+.panel-tabs > li {
+    float: left;
+	margin-bottom: -1px;
+}
+
+.panel-tabs > li > a {
+    border: 1px solid transparent;
+    color: #ffffff;
+}
+
+.panel-tabs > li > a:hover {
+    border-color: transparent;
+    color: #ffffff;
+    background-color: transparent;
+}
+
+.panel-tabs > li.twitter > a,
+.panel-tabs > li.twitter > a:hover,
+.panel-tabs > li.twitter > a:focus {
+    color: #fff;
+    cursor: default;
+  background-color: rgba(85, 172, 238, 1);
+    border-bottom-color: transparent;
+}
+
+.panel-tabs > li.facebook > a,
+.panel-tabs > li.facebook > a:hover,
+.panel-tabs > li.facebook > a:focus {
+    color: #fff;
+    cursor: default;
+    background-color: rgba(59, 89, 152,1);
+    border-bottom-color: transparent;
 }

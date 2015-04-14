@@ -116,10 +116,24 @@
 				</div>
 				<div class="col-sm-12 col-md-5">
 					<div class="panel panel-primary">
-						<div class="panel-heading text-center">
-							<h3 class="panel-title">Timeline</h3>
+						<div class="panel-heading panel-timeline">
+							<div class="panel-title">
+								<ul class="nav panel-tabs">
+									<li class="twitter" style="width: 50%;"><a id="twitter"> <img
+											src="img/twitter_logo.png"
+											style="float: left; width: 36px; height: 28px;" />
+											<div class="text-center;">Twiiter</div>
+									</a></li>
+									<li class="facebook" style="width: 50%;"><a id="facebook"
+										class="text-center;"> <img src="img/fb_logo.png"
+											style="float: left; width: 28px; height: 28px;" />
+											<div class="text-center;">Facebook</div>
+									</a></li>
+								</ul>
+							</div>
 						</div>
-						<div id="timelineBlock" class="panel-body fixed-panel"></div> 
+						<div id="timelineTwitter" class="panel-body fixed-panel"></div>
+						<div id="timelineFacebook" class="panel-body fixed-panel"></div>
 					</div>
 				</div>
 			</div>
@@ -138,8 +152,7 @@
 		th:src="@{/webjars/mustachejs/0.8.2/mustache.js}"></script>
 	<script th:src="@{/js/jvectormap-es-merc-en.js}"
 		src="../static/js/jvectormap-es-merc-en.js"></script>
-		<script th:src="@{/js/dashboard.js}"
-		src="../static/js/dashboard.js"></script>
+	<script th:src="@{/js/dashboard.js}" src="../static/js/dashboard.js"></script>
 	<script>
 		$(function() {
 			var palette = [ '#704169', '#00577F', '#EF1920 ', '#F07A36' ];
@@ -169,7 +182,7 @@
 	</script>
 
 	<!-- Latest compiled and minified JavaScript -->
-	<script id="timeline" type="x-tmpl-mustache">
+	<script id="twitterBlock" type="x-tmpl-mustache">
 		{{#tweets}}
 			<div class="panel panel-default panel-tweet">
 				<div class="panel-heading">
@@ -184,6 +197,8 @@
 				</div>
 			</div>
 		{{/tweets}}
+	</script>
+	<script id="facebookBlock" type="x-tmpl-mustache">
 	</script>
 </body>
 </html>
