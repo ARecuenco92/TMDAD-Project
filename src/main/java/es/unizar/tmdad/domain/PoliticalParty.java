@@ -20,6 +20,6 @@ public class PoliticalParty {
 	private List<Amount> tweetsAmount;
 
 	// Latest tweets & Facebook post
-	private List<MyTweet> tweets;
-	private List<MyPost> posts;
+//	private List<MyTweet> tweets;
+//	private List<MyPost> posts;
 }

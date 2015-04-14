@@ -1,8 +1,8 @@
 $(document).ready(function() {
-	registerSearch();
+	timelineSearch();
 });
 
-function registerSearch() {
+function timelineSearch() {
 	$.get('timeline', function(data) {
 		var template = $('#timeline').html();
 		Mustache.parse(template); 
