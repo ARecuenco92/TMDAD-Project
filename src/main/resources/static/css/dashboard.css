@@ -1,0 +1,216 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+  border: 0;
+}
+
+.panel-political-parties{
+  display:none;
+}
+
+.panel-purple {
+    border-color: #704169;
+}
+
+.panel-purple .panel-heading {
+    border-color: #704169;
+    color: #fff;
+    background-color: #704169;
+}
+
+.panel-purple a {
+    color: #704169;
+}
+
+.panel-purple a:hover {
+    color: #b52b27;
+}
+
+
+.panel-blue {
+    border-color: #00577F;
+}
+
+.panel-blue .panel-heading {
+    border-color: #00577F;
+    color: #fff;
+    background-color: #00577F;
+}
+
+.panel-blue a {
+    color: #00577F;
+}
+
+.panel-blue a:hover {
+    color: #b52b27;
+}
+
+.panel-red {
+    border-color: #EF1920;
+}
+
+.panel-red .panel-heading {
+    border-color: #EF1920;
+    color: #fff;
+    background-color: #EF1920;
+}
+
+.panel-red a {
+    color: #EF1920;
+}
+
+.panel-red a:hover {
+    color: #b52b27;
+}
+
+.panel-orange {
+    border-color: #F07A36;
+}
+
+.panel-orange .panel-heading {
+    border-color: #F07A36;
+    color: #fff;
+    background-color: #F07A36;
+}
+
+.panel-orange a {
+    color: #F07A36;
+}
+
+.panel-orange a:hover {
+    color: #b52b27;
+}
+
+@media (min-width: 992px) {
+  .panel-political-parties{
+    display:block;
+  }
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  display: none;
+}
+
+.spain-map{
+  text-align: center;
+  width: 100%; 
+  height: 250px
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px; 
+	padding-top: 0px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+  }
+  
+  .navbar-collapse.collapse {
+    display: none !important;
+  }
+  
+  .navbar-header {
+    float: left;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .navbar-brand {
+    float:none;
+  }
+  
+  .spain-map{
+    text-align: center;
+	width: 100%; 
+	height: 455px;
+  }
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 20px;
+}
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
+.fixed-panel {
+  min-height: 360px;
+  max-height: 360px;
+  overflow-y: scroll;
+}
+
+.panel-tweet{
+  margin-bottom:10px !important;
+}
+
+.panel-tweet > .panel-heading{
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+.panel-tweet > .panel-body{
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+.img-panel-heading{
+  width: 28px;
+  height: 28px;
+  margin-right:10px;
+}
