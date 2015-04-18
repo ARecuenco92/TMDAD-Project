@@ -61,54 +61,7 @@
 			</div>
 			<div
 				class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main panel-political-parties">
-				<div class="col-sm-3 col-md-3">
-					<div class="panel panel-purple">
-						<div class="panel-heading">
-							<img
-								src="http://upload.wikimedia.org/wikipedia/commons/1/17/Podemos_logo_c%C3%ADrculos.svg"
-								style="width: 32px; height: 32px;" />
-						</div>
-						<div class="panel-footer">
-							<h3 class="panel-title">Timeline</h3>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-3 col-md-3">
-					<div class="panel panel-blue">
-						<div class="panel-heading">
-							<img
-								src="http://upload.wikimedia.org/wikipedia/commons/d/d7/PP.png"
-								style="width: 32px; height: 32px;" />
-						</div>
-						<div class="panel-footer">
-							<h3 class="panel-title">Timeline</h3>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-3 col-md-3">
-					<div class="panel panel-red">
-						<div class="panel-heading">
-							<img
-								src="http://upload.wikimedia.org/wikipedia/commons/b/b1/PSOE.png"
-								style="width: 32px; height: 32px;" />
-						</div>
-						<div class="panel-footer">
-							<h3 class="panel-title">Timeline</h3>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-3 col-md-3">
-					<div class="panel panel-orange">
-						<div class="panel-heading">
-							<img
-								src="http://upload.wikimedia.org/wikipedia/commons/3/37/Ciudadanos-icono.svg"
-								style="width: 32px; height: 32px;" />
-						</div>
-						<div class="panel-footer">
-							<h3 class="panel-title">Timeline</h3>
-						</div>
-					</div>
-				</div>
+				<div id="resumeParties"></div>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="col-sm-12 col-md-7">
@@ -199,6 +152,36 @@
 		{{/tweets}}
 	</script>
 	<script id="facebookBlock" type="x-tmpl-mustache">
+		{{#.}}
+			<div class="panel panel-default panel-tweet">
+				<div class="panel-heading">
+					<a target="_blank" href=""> 
+						<b>@{{from.name}}</b>
+					</a>
+				</div>
+				<div class="panel-body">
+					{{{message}}}
+				</div>
+			</div>
+		{{/.}}
+	</script>
+	<script id="resumeBlock" type="x-tmpl-mustache">
+		{{#.}}
+		<div class="col-sm-3 col-md-3">
+			<div class="panel panel-{{color}}">
+				<div class="panel-heading">
+					<img
+						src="{{logo}}"
+						style="width: 32px; height: 32px;" />
+					<b>{{name}}</b>
+				</div>
+				<div class="panel-footer">
+					<h3 class="panel-title">
+						<a href="{{webpage}}">{{webpage}}</a></h3>
+				</div>
+			</div>
+		</div>
+		{{/.}}
 	</script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	resumePaties();
 	setupTimeline();
 });
 
@@ -8,6 +9,13 @@ function setupTimeline() {
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, data);
 		$('#timelineTwitter').append(rendered);
+	});	
+	
+	$.get('timelineFacebook', function(data) {
+		var template = $('#facebookBlock').html();
+		Mustache.parse(template); 
+		var rendered = Mustache.render(template, data);
+		$('#timelineFacebook').append(rendered);
 	});	
 	
 	$('#twitter').click(function() {
@@ -20,4 +28,13 @@ function setupTimeline() {
 		$('#timelineFacebook').css("display", "block");
 	});
 	
+}
+
+function resumePaties(){
+	$.get('resumeParties', function(data) {
+		var template = $('#resumeBlock').html();
+		Mustache.parse(template); 
+		var rendered = Mustache.render(template, data);
+		$('#resumeParties').append(rendered);
+	});	
 }
