@@ -3,7 +3,6 @@ package es.unizar.tmdad.application;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.social.facebook.api.PagedList;
 import org.springframework.social.facebook.api.Post;
 import org.springframework.social.twitter.api.SearchResults;
 import org.springframework.stereotype.Controller;
@@ -41,7 +40,7 @@ public class PoliticalPartyController {
 	
 	@RequestMapping(value = "/timelineFacebook", method = RequestMethod.GET)
 	@ResponseBody
-	public PagedList<Post> searchFace(){
+	public List<Post> searchFace(){
 		return facebook.search();
 	}
 }

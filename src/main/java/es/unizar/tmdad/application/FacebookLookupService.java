@@ -17,6 +17,8 @@ import es.unizar.tmdad.domain.PoliticalParty;
 @Service
 public class FacebookLookupService {
 
+	private static final int MAXIMUM_POSTS = 25;
+
 	@Value("${facebook.appId}")
 	private String appId;
 
@@ -26,7 +28,7 @@ public class FacebookLookupService {
 	@Value("${facebook.accesToken}")
 	private String accesToken;
 
-	public PagedList<Post> search() {
+	public List<Post> search() {
 		Facebook facebook = new FacebookTemplate(accesToken);
 		PagedList<Post> list = facebook.feedOperations().getFeed("psoe");
 		list.addAll(facebook.feedOperations().getFeed("pp"));
@@ -34,7 +36,7 @@ public class FacebookLookupService {
 		list.addAll(facebook.feedOperations().getFeed("Cs.Ciudadanos"));
 		Collections.sort(list, (Post p1, Post p2) -> p2.getCreatedTime().compareTo(p1.getCreatedTime()));
 
-		return list;
+		return list.subList(0, MAXIMUM_POSTS);
 	}
 
 	public List<PoliticalParty> getPoliticalParties(){

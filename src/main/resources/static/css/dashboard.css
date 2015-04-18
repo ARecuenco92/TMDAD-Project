@@ -169,7 +169,8 @@ body {
  * Main content
  */
 .main {
-	padding: 20px;
+	padding-top: 18px;
+	padding-bottom: 5px;
 }
 
 @media ( min-width : 768px) {
