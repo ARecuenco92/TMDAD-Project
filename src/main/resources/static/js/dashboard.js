@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	resumePaties();
+	resumeParties();
 	setupTimeline();
 });
 
@@ -30,7 +30,7 @@ function setupTimeline() {
 	
 }
 
-function resumePaties(){
+function resumeParties(){
 	$.get('resumeParties', function(data) {
 		var template = $('#resumeBlock').html();
 		Mustache.parse(template); 
