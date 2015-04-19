@@ -49,6 +49,8 @@ function setupDial(){
 		'dynamicDraw' : true,
 		'thickness' : 0.2,
 		'tickColorizeValues' : true,
+		'fgColor' : "#D3D4D2",
+		'bgColor' : "#F8F9F7",
 		'skin' : 'tron'
 	});
 	myDelay(0);
