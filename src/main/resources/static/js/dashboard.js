@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	resumeParties();
 	setupTimeline();
+	setupDial();
 });
 
 function setupTimeline() {
@@ -8,14 +9,14 @@ function setupTimeline() {
 		var template = $('#twitterBlock').html();
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, data);
-		$('#timelineTwitter').append(rendered);
+		$('#timelineTwitter').html(rendered);
 	});	
 	
 	$.get('timelineFacebook', function(data) {
 		var template = $('#facebookBlock').html();
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, data);
-		$('#timelineFacebook').append(rendered);
+		$('#timelineFacebook').html(rendered);
 	});	
 	
 	$('#twitter').click(function() {
@@ -37,4 +38,28 @@ function resumeParties(){
 		var rendered = Mustache.render(template, data);
 		$('#resumeParties').append(rendered);
 	});	
+}
+
+function setupDial(){
+	$('.knob').knob({
+		value : 0,
+		'readOnly' : true,
+		'width' : 120,
+		'height' : 120,
+		'dynamicDraw' : true,
+		'thickness' : 0.2,
+		'tickColorizeValues' : true,
+		'skin' : 'tron'
+	});
+	myDelay(0);
+}
+
+function myDelay(value) {
+    $('.knob').val(value).trigger("change");
+    if($('.knob').data('max') > value){
+    	setTimeout(myDelay, 50, value+1);
+    }
+    else{
+    	setTimeout(myDelay, 50, 0);
+    }   
 }

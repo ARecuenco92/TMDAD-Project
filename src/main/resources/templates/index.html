@@ -20,6 +20,7 @@
 <!-- jVectorMap core CSS -->
 <link th:href="@{/webjars/jvectormap/2.0.1/jquery-jvectormap.css}"
 	rel="stylesheet" />
+
 </head>
 
 <body>
@@ -72,21 +73,25 @@
 						<div class="panel-heading panel-timeline">
 							<div class="panel-title">
 								<ul class="nav panel-tabs">
-									<li class="twitter" style="width: 50%;"><a id="twitter"> <img
-											src="img/twitter_logo.png"
-											style="float: left; width: 34px; height: 24px;margin-left:15px;margin-right:15px;" />
+									<li class="twitter" style="width: 50%;"><a id="twitter">
+											<img src="img/twitter_logo.png"
+											style="float: left; width: 34px; height: 24px; margin-left: 15px; margin-right: 15px;" />
 											<div>Twitter</div>
 									</a></li>
 									<li class="facebook" style="width: 50%;"><a id="facebook"
 										class="text-center;"> <img src="img/fb_logo.png"
-											style="float: left; width: 24px; height: 24px;margin-left:15px;margin-right:15px;" />
+											style="float: left; width: 24px; height: 24px; margin-left: 15px; margin-right: 15px;" />
 											<div>Facebook</div>
 									</a></li>
 								</ul>
 							</div>
 						</div>
-						<div id="timelineTwitter" class="panel-body fixed-panel"></div>
-						<div id="timelineFacebook" class="panel-body fixed-panel"></div>
+						<div id="timelineTwitter" class="panel-body fixed-panel">
+							<input class="knob" data-max="50" data-displayInput="false" />
+						</div>
+						<div id="timelineFacebook" class="panel-body fixed-panel">
+							<input class="knob" data-max="50" data-displayInput="false" />
+						</div>
 					</div>
 				</div>
 			</div>
@@ -105,6 +110,8 @@
 		th:src="@{/webjars/mustachejs/0.8.2/mustache.js}"></script>
 	<script th:src="@{/js/jvectormap-es-merc-en.js}"
 		src="../static/js/jvectormap-es-merc-en.js"></script>
+	<script th:src="@{/webjars/jquery-knob/1.2.11/jquery.knob.min.js}"
+		src="../static/js/jquery-knob/1.2.11/jquery.knob.min.js"></script>
 	<script th:src="@{/js/dashboard.js}" src="../static/js/dashboard.js"></script>
 	<script>
 		$(function() {
