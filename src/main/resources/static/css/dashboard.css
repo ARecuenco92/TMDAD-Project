@@ -274,3 +274,7 @@ body {
 .panel-tabs>li.facebook>a:hover {
 	background-color: rgba(59, 89, 152, 0.3);
 }
+
+.panel-knob {
+	margin: 120px;
+}

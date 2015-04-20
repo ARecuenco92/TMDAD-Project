@@ -44,8 +44,8 @@ function setupDial(){
 	$('.knob').knob({
 		value : 0,
 		'readOnly' : true,
-		'width' : 120,
-		'height' : 120,
+		'width' : 80,
+		'height' : 80,
 		'dynamicDraw' : true,
 		'thickness' : 0.2,
 		'tickColorizeValues' : true,
