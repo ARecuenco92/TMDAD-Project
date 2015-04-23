@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.facebook.api.Post;
 import org.springframework.social.twitter.api.SearchResults;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,13 +22,19 @@ public class PoliticalPartyController {
 	@Autowired
 	FacebookLookupService facebook;
 	
-	@RequestMapping("/")
+	@RequestMapping(value= "/", method=RequestMethod.GET)
 	public String index() {
 		return "index";
 	}
 	
-	@RequestMapping("/search")
+	@RequestMapping(value = "/search", method=RequestMethod.GET)
 	public String search() {
+		return "search";
+	}
+	
+	@RequestMapping(value = "/search", method=RequestMethod.POST)
+	@ResponseBody
+	public String performSearch(@RequestBody String json) {
 		return "search";
 	}
 	

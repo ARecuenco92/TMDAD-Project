@@ -66,43 +66,43 @@
 				<h3 class="text-center">Buscar últimos tweets</h3>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-3 main">
-				<form>
+				<form id="search-form">
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-addon">Partidos (Opcional)</div>
-							<select multiple="true" class="form-control">
-								<option>Podemos</option>
-								<option>Partido Popular</option>
-								<option>Partido Socialista</option>
-								<option>Ciudadanos</option>
+							<select multiple="true" class="form-control" name="political-party">
+								<option value="podemos">Podemos</option>
+								<option value="pp">Partido Popular</option>
+								<option value="pose">Partido Socialista</option>
+								<option value="ciudadanos">Ciudadanos</option>
 							</select>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-addon">Usuario (Opcional)</div>
-							<input type="text" class="form-control" />
+							<input type="text" name="user" class="form-control" />
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-addon">Palabras clave</div>
-							<input type="text" class="form-control" />
+							<input type="text" id="key-words" name="key-words" class="form-control" />
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-addon">Ordenar tweets</div>
-							<select class="form-control">
-								<option>Por fecha</option>
-								<option>Por retweets</option>
-								<option>Por favoritos</option>
+							<select name="sort-by" class="form-control">
+								<option value="date">Por fecha</option>
+								<option value="retweets">Por retweets</option>
+								<option value="favorites">Por favoritos</option>
 							</select>
 						</div>
 					</div>
 					<div
 						class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4 main">
-						<button type="submit" class="btn btn-primary btn-lg" style="width:100%">Buscar</button>
+						<button id="search-btn" class="btn btn-primary btn-lg" style="width:100%">Buscar</button>
 					</div>
 				</form>
 			</div>
@@ -118,5 +118,6 @@
 	<script
 		src="https://maxcdn.bootstrapcdn.com/mustachejs/0.8.2/mustache.js"
 		th:src="@{/webjars/mustachejs/0.8.2/mustache.js}"></script>
+	<script th:src="@{/js/search.js}" src="../static/js/search.js"></script>
 </body>
 </html>
