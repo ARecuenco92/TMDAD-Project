@@ -26,6 +26,11 @@ public class PoliticalPartyController {
 		return "index";
 	}
 	
+	@RequestMapping("/search")
+	public String search() {
+		return "search";
+	}
+	
 	@RequestMapping(value = "/timeline", method = RequestMethod.GET)
 	@ResponseBody
 	public SearchResults timeline() {
