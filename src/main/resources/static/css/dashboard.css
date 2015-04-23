@@ -278,3 +278,8 @@ body {
 .panel-knob {
 	margin: 120px;
 }
+
+.input-group-addon{
+	min-width: 150px;
+	text-align:left;
+}

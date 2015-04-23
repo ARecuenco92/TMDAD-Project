@@ -1,0 +1,122 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Politic App</title>
+
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet"
+	href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"
+	th:href="@{/webjars/bootstrap/3.3.1/css/bootstrap.min.css}" />
+
+<!-- Custom styles for this template -->
+<link th:href="@{/css/dashboard.css}" href="../static/css/dashboard.css"
+	rel="stylesheet" />
+
+<!-- jVectorMap core CSS -->
+<link th:href="@{/webjars/jvectormap/2.0.1/jquery-jvectormap.css}"
+	rel="stylesheet" />
+
+</head>
+
+<body>
+
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Politic App</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/">Home</a></li>
+					<li class="active"><a href="#">Buscar</a></li>
+					<li><a href="#">Podemos</a></li>
+					<li><a href="#">Partido Popular</a></li>
+					<li><a href="#">Partido Socialista</a></li>
+					<li><a href="#">Ciudadanos</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li><a href="/">Home</a></li>
+					<li class="active"><a href="#">Buscar</a></li>
+					<li><a href="#">Podemos</a></li>
+					<li><a href="#">Partido Popular</a></li>
+					<li><a href="#">Partido Socialista</a></li>
+					<li><a href="#">Ciudadanos</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<h3 class="text-center">Buscar últimos tweets</h3>
+			</div>
+			<div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-3 main">
+				<form>
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-addon">Partidos (Opcional)</div>
+							<select multiple="true" class="form-control">
+								<option>Podemos</option>
+								<option>Partido Popular</option>
+								<option>Partido Socialista</option>
+								<option>Ciudadanos</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-addon">Usuario (Opcional)</div>
+							<input type="text" class="form-control" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-addon">Palabras clave</div>
+							<input type="text" class="form-control" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-addon">Ordenar tweets</div>
+							<select class="form-control">
+								<option>Por fecha</option>
+								<option>Por retweets</option>
+								<option>Por favoritos</option>
+							</select>
+						</div>
+					</div>
+					<div
+						class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4 main">
+						<button type="submit" class="btn btn-primary btn-lg" style="width:100%">Buscar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="http://code.jquery.com/jquery-1.11.2.min.js"
+		th:src="@{/webjars/jquery/2.1.3/jquery.min.js}"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/3.3.1/js/bootstrap.min.js}"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/mustachejs/0.8.2/mustache.js"
+		th:src="@{/webjars/mustachejs/0.8.2/mustache.js}"></script>
+</body>
+</html>
