@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import es.unizar.tmdad.domain.Filter;
 import es.unizar.tmdad.domain.PoliticalParty;
 
 @Controller
@@ -32,9 +33,8 @@ public class PoliticalPartyController {
 		return "search";
 	}
 	
-	@RequestMapping(value = "/search", method=RequestMethod.POST)
-	@ResponseBody
-	public String performSearch(@RequestBody String json) {
+	@RequestMapping(value = "/search", headers = {"Content-type=application/json"}, method=RequestMethod.POST)
+	public String performSearch(@RequestBody Filter filter) {
 		return "search";
 	}
 	

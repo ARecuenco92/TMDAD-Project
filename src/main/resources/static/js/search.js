@@ -6,9 +6,18 @@ function search(event){
 	}
 	else{
 		criteria.parent("div").removeClass("has-error");
-		var sarchFilter = $("#search-form").serializeArray();
-		$.post('search', sarchFilter, function(data) {
-			
+		var filter = {};
+		filter['politicalParties'] = $("[name='political-party']").val();
+		filter['user'] = $("[name='user']").val();
+		filter['keyWords'] = $("[name='key-words']").val();
+		filter['sortBy'] = $("[name='sort-by']").val();
+		$.ajax({
+			url : 'search',
+			data : JSON.stringify(filter),
+			method: "POST",
+			contentType : "application/json; charset=utf-8",
+			success: function(data) {
+			}
 		});
 	}
 }
