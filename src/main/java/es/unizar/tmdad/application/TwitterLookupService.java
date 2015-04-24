@@ -65,7 +65,7 @@ public class TwitterLookupService {
 		if(filter.getPoliticalParties()!=null){
 			query = query + "@"+filter.getPoliticalParties().get(0);
 			for(int i = 1; i< filter.getPoliticalParties().size();i++){
-				query = query + "OR @"+filter.getPoliticalParties().get(i);
+				query = query + " OR @"+filter.getPoliticalParties().get(i);
 			}
 		}
 		else{
@@ -74,11 +74,11 @@ public class TwitterLookupService {
 		if(filter.getKeyWords().contains(" ")){
 			String[]keyWords = filter.getKeyWords().split(" ");
 			for(int i=0; i< keyWords.length; i++){
-				query = query + "AND " + keyWords[i];
+				query = query + " AND " + keyWords[i];
 			}
 		}
 		else{
-			query = query + "AND " + filter.getKeyWords();
+			query = query + " AND " + filter.getKeyWords();
 		}
 		return query;
 	}
