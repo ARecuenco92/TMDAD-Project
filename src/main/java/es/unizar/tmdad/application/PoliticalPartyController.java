@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.facebook.api.Post;
 import org.springframework.social.twitter.api.SearchResults;
+import org.springframework.social.twitter.api.Tweet;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,8 +35,9 @@ public class PoliticalPartyController {
 	}
 	
 	@RequestMapping(value = "/search", headers = {"Content-type=application/json"}, method=RequestMethod.POST)
-	public String performSearch(@RequestBody Filter filter) {
-		return "search";
+	@ResponseBody
+	public List<Tweet> performSearch(@RequestBody Filter filter) {
+		return twitter.search(filter);
 	}
 	
 	@RequestMapping(value = "/timeline", method = RequestMethod.GET)

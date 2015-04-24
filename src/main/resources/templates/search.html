@@ -106,6 +106,9 @@
 					</div>
 				</form>
 			</div>
+			<div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-3 main">
+				<div id="results"></div>
+			</div>
 		</div>
 	</div>
 
@@ -119,5 +122,23 @@
 		src="https://maxcdn.bootstrapcdn.com/mustachejs/0.8.2/mustache.js"
 		th:src="@{/webjars/mustachejs/0.8.2/mustache.js}"></script>
 	<script th:src="@{/js/search.js}" src="../static/js/search.js"></script>
+	
+	<script id="twitterMsn" type="x-tmpl-mustache">
+		{{#.}}
+			<div class="panel panel-default panel-tweet">
+				<div class="panel-heading">
+					<img class="img-rounded img-panel-heading"
+						src="{{profileImageUrl}}" />
+					<a target="_blank" href="https://twitter.com/{{fromUser}}"> 
+						<b>@{{fromUser}}</b>
+					</a>
+					<b>Ret:{{retweetCount}}Fav:{{favoriteCount}}</b>
+				</div>
+				<div class="panel-body">
+					{{{unmodifiedText}}}
+				</div>
+			</div>
+		{{/.}}
+	</script>
 </body>
 </html>

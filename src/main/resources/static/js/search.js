@@ -17,6 +17,10 @@ function search(event){
 			method: "POST",
 			contentType : "application/json; charset=utf-8",
 			success: function(data) {
+				var template = $('#twitterMsn').html();
+				Mustache.parse(template); 
+				var rendered = Mustache.render(template, data);
+				$('#results').html(rendered);
 			}
 		});
 	}
