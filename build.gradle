@@ -36,6 +36,7 @@ dependencies {
 	compile("org.springframework.social:spring-social-facebook")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-social-twitter")
+    compile("org.twitter4j:twitter4j-core:4.0.3")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-websocket")
     compile("org.springframework.boot:spring-boot-starter-integration")

@@ -12,52 +12,58 @@ import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.api.impl.TwitterTemplate;
 import org.springframework.stereotype.Service;
 
+import twitter4j.GeoLocation;
+import twitter4j.Query;
+import twitter4j.Status;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
 import es.unizar.tmdad.domain.Filter;
 
 @Service
 public class TwitterLookupService {
 	@Value("${twitter.consumerKey}")
 	private String consumerKey;
-	
+
 	@Value("${twitter.consumerSecret}")
 	private String consumerSecret;
-	
+
 	@Value("${twitter.accessToken}")
 	private String accessToken;
-	
+
 	@Value("${twitter.accessTokenSecret}")
 	private String accessTokenSecret;
-	
+
 	public SearchResults search() {
-        Twitter twitter = new TwitterTemplate(consumerKey, consumerSecret, accessToken, accessTokenSecret);
-        SearchParameters params = new  SearchParameters("@psoe OR @ahorapodemos OR @pp OR @ciudadanoscs");
-        return twitter.searchOperations().search(params);
-    }
-	
+		Twitter twitter = new TwitterTemplate(consumerKey, consumerSecret, accessToken, accessTokenSecret);
+		SearchParameters params = new  SearchParameters("@psoe OR @ahorapodemos OR @pp OR @ciudadanoscs");
+		return twitter.searchOperations().search(params);
+	}
+
 	public List<Tweet> search(Filter filter){
 		Twitter twitter = new TwitterTemplate(consumerKey, consumerSecret, accessToken, accessTokenSecret);
 		List<Tweet> tweets;
 		if(filter.getUser().equals("")){
 			String query = getQuery(filter);
 			SearchParameters params = new  SearchParameters(query);
-	        tweets = twitter.searchOperations().search(params).getTweets();
+			tweets = twitter.searchOperations().search(params).getTweets();
 		}
 		else{
 			tweets = twitter.timelineOperations().getUserTimeline(filter.getUser(),200);
 			tweets = filtrarTweets(tweets,filter);
 		}
 
-        if(filter.getSortBy().equals("retweets")){
-            Comparator<Tweet> byRetweets = (Tweet e1, Tweet e2) -> Integer
-                    .compare(e1.getRetweetCount(), e2.getRetweetCount());
-        	tweets = tweets.stream().sorted(byRetweets.reversed()).collect(Collectors.toList());
-        }
-        else if(filter.getSortBy().equals("favorites")){
-        	Comparator<Tweet> byFav= (Tweet e1, Tweet e2) -> Integer
-                    .compare(e1.getFavoriteCount(), e2.getFavoriteCount());
-        	tweets = tweets.stream().sorted(byFav.reversed()).collect(Collectors.toList());
-        }
-        return tweets;
+		if(filter.getSortBy().equals("retweets")){
+			Comparator<Tweet> byRetweets = (Tweet e1, Tweet e2) -> Integer
+					.compare(e1.getRetweetCount(), e2.getRetweetCount());
+			tweets = tweets.stream().sorted(byRetweets.reversed()).collect(Collectors.toList());
+		}
+		else if(filter.getSortBy().equals("favorites")){
+			Comparator<Tweet> byFav= (Tweet e1, Tweet e2) -> Integer
+					.compare(e1.getFavoriteCount(), e2.getFavoriteCount());
+			tweets = tweets.stream().sorted(byFav.reversed()).collect(Collectors.toList());
+		}
+		return tweets;
 	}
 
 	public String getQuery(Filter filter){
@@ -82,7 +88,7 @@ public class TwitterLookupService {
 		}
 		return query;
 	}
-	
+
 	public List<Tweet> filtrarTweets(List<Tweet> tweets,Filter filter){
 		tweets = tweets.stream().filter(t -> {
 			String texto = t.getUnmodifiedText();
@@ -122,18 +128,36 @@ public class TwitterLookupService {
 		}).collect(Collectors.toList());
 		return tweets;
 	}
-//	Stream<Tweet> s = q.stream();
-//    List<Tweet> tweets = s.filter(t -> t.getUnmodifiedText().contains(filter.getKeyWords()))
-//	.filter(t-> {
-//    	boolean pasa = false;
-//    	if(filter.getPoliticalParties()==null){
-//    		return true;
-//    	}
-//    	for(int i = 0; i<filter.getPoliticalParties().size() && !pasa;i++){
-//    	 if(t.getUnmodifiedText().contains(filter.getPoliticalParties().get(i))){
-//    		 pasa = true;
-//    	 }
-//    	}
-//    	return pasa;}).collect(Collectors.toList());
+	//	Stream<Tweet> s = q.stream();
+	//    List<Tweet> tweets = s.filter(t -> t.getUnmodifiedText().contains(filter.getKeyWords()))
+	//	.filter(t-> {
+	//    	boolean pasa = false;
+	//    	if(filter.getPoliticalParties()==null){
+	//    		return true;
+	//    	}
+	//    	for(int i = 0; i<filter.getPoliticalParties().size() && !pasa;i++){
+	//    	 if(t.getUnmodifiedText().contains(filter.getPoliticalParties().get(i))){
+	//    		 pasa = true;
+	//    	 }
+	//    	}
+	//    	return pasa;}).collect(Collectors.toList());
+
+	public List<Status> geolocalize() throws TwitterException{
+		twitter4j.Twitter twitter = new TwitterFactory().getInstance();
+		twitter.setOAuthConsumer(consumerKey, consumerSecret);
+		AccessToken oathAccessToken = new AccessToken(accessToken, accessTokenSecret);
+		twitter.setOAuthAccessToken(oathAccessToken);
+		
+		Query query = new Query();
+		query.setQuery("@psoe OR @ahorapodemos OR @pp OR @ciudadanoscs");
+		GeoLocation geo = new GeoLocation(40.400, 3.683);
+		query.setGeoCode(geo, 1000, Query.Unit.km);
+		query.setCount(100);
+		
+		return twitter.search(query).getTweets()
+			.stream()
+			.filter(status -> status.getGeoLocation() != null)
+			.collect(Collectors.toList());
+	}
 }
 

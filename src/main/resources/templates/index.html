@@ -119,33 +119,6 @@
 	<script th:src="@{/webjars/jquery-knob/1.2.11/jquery.knob.min.js}"
 		src="../static/js/jquery-knob/1.2.11/jquery.knob.min.js"></script>
 	<script th:src="@{/js/dashboard.js}" src="../static/js/dashboard.js"></script>
-	<script>
-		$(function() {
-			var palette = [ '#704169', '#00577F', '#EF1920 ', '#F07A36' ];
-			var generateColors = function() {
-				var colors = {}, key;
-				for (key in map.regions) {
-					colors[key] = palette[Math.floor(Math.random()
-							* palette.length)];
-				}
-				return colors;
-			};
-			var map;
-			map = new jvm.Map({
-				map : 'es_merc_en',
-				backgroundColor : 'none',
-				zoomButtons : false,
-				container : $('#spain-map'),
-				zoomMax : 1,
-				series : {
-					regions : [ {
-						attribute : 'fill'
-					} ]
-				}
-			});
-			map.series.regions[0].setValues(generateColors());
-		});
-	</script>
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script id="twitterBlock" type="x-tmpl-mustache">
