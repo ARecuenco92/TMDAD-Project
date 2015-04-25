@@ -1,6 +1,8 @@
 $(document).ready(function() {
+	if($('.panel-political-parties').css('display') !== 'none'){
+		resumeParties();	
+	}
 	setMap();
-	resumeParties();
 	setupTimeline();
 	setupDial();
 });
@@ -33,11 +35,16 @@ function setupTimeline() {
 }
 
 function resumeParties(){
-	$.get('resumeParties', function(data) {
-		var template = $('#resumeBlock').html();
-		Mustache.parse(template); 
-		var rendered = Mustache.render(template, data);
-		$('#resumeParties').append(rendered);
+	$.ajax({
+		url: 'resumeParties',
+		method: 'GET',
+		async:false,
+		success: function(data) {
+			var template = $('#resumeBlock').html();
+			Mustache.parse(template); 
+			var rendered = Mustache.render(template, data);
+			$('#resumeParties').append(rendered);
+		}
 	});	
 }
 

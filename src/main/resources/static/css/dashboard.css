@@ -20,17 +20,17 @@ body {
 }
 
 .panel-purple {
-	border-color: #704169;
+	border-color: #6A205F;
 }
 
 .panel-purple .panel-heading {
-	border-color: #704169;
+	border-color: #6A205F;
 	color: #fff;
-	background-color: #704169;
+	background-color: #6A205F;
 }
 
 .panel-purple a {
-	color: #704169;
+	color: #6A205F;
 }
 
 .panel-purple a:hover {
@@ -38,17 +38,17 @@ body {
 }
 
 .panel-blue {
-	border-color: #00577F;
+	border-color: #006EC6;
 }
 
 .panel-blue .panel-heading {
-	border-color: #00577F;
+	border-color: #006EC6;
 	color: #fff;
-	background-color: #00577F;
+	background-color: #006EC6;
 }
 
 .panel-blue a {
-	color: #00577F;
+	color: #006EC6;
 }
 
 .panel-blue a:hover {
@@ -56,17 +56,17 @@ body {
 }
 
 .panel-red {
-	border-color: #EF1920;
+	border-color: #D20804;
 }
 
 .panel-red .panel-heading {
-	border-color: #EF1920;
+	border-color: #D20804;
 	color: #fff;
-	background-color: #EF1920;
+	background-color: #D20804;
 }
 
 .panel-red a {
-	color: #EF1920;
+	color: #D20804;
 }
 
 .panel-red a:hover {
@@ -74,24 +74,24 @@ body {
 }
 
 .panel-orange {
-	border-color: #F07A36;
+	border-color: #F38725;
 }
 
 .panel-orange .panel-heading {
-	border-color: #F07A36;
+	border-color: #F38725;
 	color: #fff;
-	background-color: #F07A36;
+	background-color: #F38725;
 }
 
 .panel-orange a {
-	color: #F07A36;
+	color: #F38725;
 }
 
 .panel-orange a:hover {
 	color: #b52b27;
 }
 
-@media ( min-width : 992px) {
+@media ( min-width : 1150px) {
 	.panel-political-parties {
 		display: block;
 	}
