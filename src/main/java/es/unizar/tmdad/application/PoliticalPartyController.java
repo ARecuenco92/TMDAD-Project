@@ -16,6 +16,7 @@ import twitter4j.Status;
 import twitter4j.TwitterException;
 import es.unizar.tmdad.domain.Filter;
 import es.unizar.tmdad.domain.PoliticalParty;
+import es.unizar.tmdad.domain.chart.Chart;
 
 @Controller
 public class PoliticalPartyController {
@@ -64,5 +65,12 @@ public class PoliticalPartyController {
 	@ResponseBody
 	public List<Post> searchFace(){
 		return facebook.search();
+	}
+	
+	@RequestMapping(value = "/chart/evolution", method = RequestMethod.GET)
+	@ResponseBody
+	public Chart evolutonChart(){
+		ChartService service = new ChartService();
+		return service.evolution();
 	}
 }

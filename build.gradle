@@ -49,6 +49,7 @@ dependencies {
     compile("org.webjars:mustachejs:0.8.2")
     compile("org.webjars:jvectormap:2.0.1")
     compile("org.webjars:jquery-knob:1.2.11")
+    compile("org.webjars:chartjs:1.0.2");
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }

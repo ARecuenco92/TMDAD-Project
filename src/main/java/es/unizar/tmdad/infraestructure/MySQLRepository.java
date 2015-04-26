@@ -4,11 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import es.unizar.tmdad.application.ChartRepository;
-import es.unizar.tmdad.domain.Amount;
+import es.unizar.tmdad.domain.chart.Chart;
+import es.unizar.tmdad.domain.chart.ChartData;
+import es.unizar.tmdad.domain.chart.ChartRepository;
 
 public class MySQLRepository implements ChartRepository{
 
@@ -16,10 +15,9 @@ public class MySQLRepository implements ChartRepository{
 	private final String SOCIAL_NETWORK_INFO_TABLE = "social_network_info";
 
 	@Override
-	public List<Amount> getFollowers(String politicalParty) {
+	public ChartData getFollowers(String politicalParty) {
 		Connection connection = null;
-		List<Amount> charts = new ArrayList<Amount>();
-		Amount amount;
+		ChartData chartData = new ChartData();
 		try{
 			connection = MySQLConnection.getConnection();
 			String queryString = "SELECT followers,date FROM "+POLITICAL_PARTIES_TABLE
@@ -33,10 +31,7 @@ public class MySQLRepository implements ChartRepository{
 			preparedStatement.setString(1, politicalParty);
 			ResultSet result = preparedStatement.executeQuery();
 			while(result.next()){
-				amount = new Amount();
-				amount.setAmount(result.getInt("followers"));
-				amount.setDate(result.getDate("date"));			
-				charts.add(amount);
+				chartData.addData(result.getDate("date").toString(), result.getInt("followers"));
 			}
 
 		} 
@@ -53,14 +48,13 @@ public class MySQLRepository implements ChartRepository{
 				e.printStackTrace(System.err);
 			}
 		}  
-		return charts;
+		return chartData;
 	}
 	
 	@Override
-	public List<Amount> getLikes(String politicalParty) {
+	public ChartData getLikes(String politicalParty) {
 		Connection connection = null;
-		List<Amount> charts = new ArrayList<Amount>();
-		Amount amount;
+		ChartData chartData = new ChartData();
 		try{
 			connection = MySQLConnection.getConnection();
 			String queryString = "SELECT likes,date FROM "+POLITICAL_PARTIES_TABLE
@@ -74,10 +68,7 @@ public class MySQLRepository implements ChartRepository{
 			preparedStatement.setString(1, politicalParty);
 			ResultSet result = preparedStatement.executeQuery();
 			while(result.next()){
-				amount = new Amount();
-				amount.setAmount(result.getInt("followers"));
-				amount.setDate(result.getDate("date"));			
-				charts.add(amount);
+				chartData.addData(result.getDate("date").toString(), result.getInt("likes"));
 			}
 
 		} 
@@ -94,14 +85,46 @@ public class MySQLRepository implements ChartRepository{
 				e.printStackTrace(System.err);
 			}
 		}  
-		return charts;
+		return chartData;
+	}
+	
+	@Override
+	public Chart getEvolution(){
+		Connection connection = null;
+		Chart evolution = new Chart();
+		try{
+			connection = MySQLConnection.getConnection();
+			String queryString = "SELECT name FROM "+POLITICAL_PARTIES_TABLE;
+
+			PreparedStatement preparedStatement = 
+					connection.prepareStatement(queryString);
+
+			ResultSet result = preparedStatement.executeQuery();
+			while(result.next()){
+				evolution.addChatData(getEvolution(result.getString("name")));
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace(System.err);
+		} 
+		finally{
+			try {
+				if(connection != null){
+					connection.close();
+				}
+			} 
+			catch (SQLException e) {
+				e.printStackTrace(System.err);
+			}
+		}  
+		return evolution;
 	}
 
 	@Override
-	public List<Amount> getEvolution (String politicalParty) {
+	public ChartData getEvolution (String politicalParty) {
 		Connection connection = null;
-		List<Amount> charts = new ArrayList<Amount>();
-		Amount amount; int oldAmount;
+		ChartData chartData = new ChartData();
+		int oldAmount;
 		try{
 			connection = MySQLConnection.getConnection();
 			String queryString = "SELECT likes + followers AS evolution, date "
@@ -118,11 +141,8 @@ public class MySQLRepository implements ChartRepository{
 
 			if(result.next()){
 				oldAmount = result.getInt("evolution");
-				while(result.next()){
-					amount = new Amount();
-					amount.setAmount(100 * ((float) result.getInt("evolution")/oldAmount -1));
-					amount.setDate(result.getDate("date"));			
-					charts.add(amount);
+				while(result.next()){					
+					chartData.addData(result.getDate("date").toString(), 100 * ((float) result.getInt("evolution")/oldAmount -1));
 				}
 			}
 
@@ -140,6 +160,6 @@ public class MySQLRepository implements ChartRepository{
 				e.printStackTrace(System.err);
 			}
 		}  
-		return charts;
+		return chartData;
 	}
 }
