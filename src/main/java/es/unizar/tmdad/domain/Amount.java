@@ -3,14 +3,14 @@ import java.sql.Date;
 
 public class Amount {
 
-	private int amount;
+	private float amount;
 	private Date date;
 	
-	public int getAmount() {
+	public float getAmount() {
 		return amount;
 	}
 	
-	public void setAmount(int amount) {
+	public void setAmount(float amount) {
 		this.amount = amount;
 	}
 	
