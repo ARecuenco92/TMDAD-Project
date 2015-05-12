@@ -2,6 +2,8 @@ package es.unizar.tmdad.domain.chart;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Chart {
 
@@ -13,6 +15,10 @@ public class Chart {
 	
 	public void addChatData(ChartData chartData){
 		data.add(chartData);
+	}
+	
+	public void mapChartData(Function<? super ChartData, ? extends ChartData> function){
+		data = data.stream().map(function).collect(Collectors.toList());
 	}
 
 }	

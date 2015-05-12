@@ -5,16 +5,24 @@ import java.util.List;
 
 public class ChartData {
 	
-	public List<String> label;
+	public List<String> labels;
 	public List<Float> dataSet;
 	
 	public ChartData(){
-		label = new ArrayList<String>();
+		labels = new ArrayList<String>();
 		dataSet = new ArrayList<Float>();
 	}
 	
 	public void addData(String label, float data){
-		this.label.add(label);
+		this.labels.add(label);
 		this.dataSet.add(data);
+	}
+	
+	public List<String> getLabels(){
+		return this.labels;
+	}
+	
+	public List<Float> getDataSet(){
+		return this.dataSet;
 	}
 }

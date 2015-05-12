@@ -168,7 +168,7 @@ function setChart(){
 		ciudadanos.data = charts[3].dataSet;
 
 		var chartData = {
-				labels: charts[0].label,
+				labels: charts[0].labels,
 				datasets: [podemos, pp, ciudadanos, psoe]
 		};
 		var myLineChart = new Chart(ctx).Line(chartData, {});

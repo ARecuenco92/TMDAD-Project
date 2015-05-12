@@ -1,22 +1,25 @@
 package es.unizar.tmdad.application;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import es.unizar.tmdad.domain.chart.Chart;
-import es.unizar.tmdad.domain.chart.ChartRepository;
-import es.unizar.tmdad.infraestructure.MySQLRepository;
+import es.unizar.tmdad.domain.chart.ChartLogic;
 
 public class ChartService {
 	
-	@Autowired
-	ChartRepository repository;
+	private ChartLogic logic;
 	
 	public ChartService(){
-		repository = new MySQLRepository();
+		logic = new ChartLogic();
 	}
 	
-	public Chart evolution(){
-		return repository.getEvolution();
+	public Chart getAdherentsEvolution(){
+		return logic.getAdherentsEvolution();
 	}
 
+	public Chart getAdherentsEvolutionPercentage(){
+		return logic.getAdherentsEvolutionPercentage();
+	}
+	
+	public Chart getNewAdherentsDiary(){
+		return logic.getNewAdherentsDiary();
+	}
 }

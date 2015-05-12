@@ -71,6 +71,6 @@ public class PoliticalPartyController {
 	@ResponseBody
 	public Chart evolutonChart(){
 		ChartService service = new ChartService();
-		return service.evolution();
+		return service.getAdherentsEvolutionPercentage();
 	}
 }
