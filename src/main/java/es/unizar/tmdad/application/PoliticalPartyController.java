@@ -67,10 +67,17 @@ public class PoliticalPartyController {
 		return facebook.search();
 	}
 	
-	@RequestMapping(value = "/chart/evolution", method = RequestMethod.GET)
+	@RequestMapping(value = "/chart/evolution/percentage", method = RequestMethod.GET)
 	@ResponseBody
-	public Chart evolutonChart(){
+	public Chart percentageEvolutonChart(){
 		ChartService service = new ChartService();
 		return service.getAdherentsEvolutionPercentage();
+	}
+	
+	@RequestMapping(value = "/chart/evolution/absolute", method = RequestMethod.GET)
+	@ResponseBody
+	public Chart absoluteEvolutonChart(){
+		ChartService service = new ChartService();
+		return service.getAdherentsEvolution();
 	}
 }
