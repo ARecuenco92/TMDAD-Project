@@ -13,7 +13,6 @@ import org.springframework.social.facebook.api.Post;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
 
-import twitter4j.UserMentionEntity;
 import es.unizar.tmdad.domain.GeoMessage;
 import es.unizar.tmdad.domain.PoliticalParty;
 import facebook4j.Facebook;
@@ -57,6 +56,31 @@ public class FacebookLookupService {
 
 		return list.subList(0, MAXIMUM_POSTS);
 	}
+	
+	public List<Post> search(String party) {
+		PagedList<Post> list = null;
+		switch(party.toLowerCase()){
+		case "podemos":
+			list = facebookTemplate.feedOperations().getFeed(podemosFacebook);
+			break;
+		case "pp":
+			list = facebookTemplate.feedOperations().getFeed(ppFacebook);
+			break;
+		case "psoe":
+			list = facebookTemplate.feedOperations().getFeed(psoeFacebook);
+			break;
+		case "ciudadanos":
+			list = facebookTemplate.feedOperations().getFeed(ciudadanosFacebook);
+			break;
+		}
+		if(list != null){
+			return list.subList(0, MAXIMUM_POSTS);
+		}
+		else{
+			return new ArrayList<Post>();
+		}
+	}
+
 
 	public List<PoliticalParty> getPoliticalParties(){
 		List<PoliticalParty> parties = new ArrayList<PoliticalParty>();

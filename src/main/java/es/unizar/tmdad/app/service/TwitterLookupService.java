@@ -1,5 +1,6 @@
 package es.unizar.tmdad.app.service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +45,30 @@ public class TwitterLookupService {
 		String query = ciudadanosTwitter+" OR "+podemosTwitter+" OR "+ppTwitter+" OR "+psoeTwitter;
 		SearchParameters params = new  SearchParameters(query);
 		return twitterTemplate.searchOperations().search(params);
+	}
+	
+	public SearchResults search(String party) {
+		SearchParameters params = null;
+		switch(party.toLowerCase()){
+		case "podemos":
+			params =  new SearchParameters(podemosTwitter);
+			break;
+		case "pp":
+			params = new SearchParameters(ppTwitter);
+			break;
+		case "psoe":
+			params = new SearchParameters(psoeTwitter);
+			break;
+		case "ciudadanos":
+			params = new SearchParameters(ciudadanosTwitter);
+			break;
+		}
+		if(params != null){
+			return twitterTemplate.searchOperations().search(params);
+		}
+		else{
+			return new SearchResults(new ArrayList<Tweet>(), null);
+		}
 	}
 
 	public List<Tweet> search(Filter filter){

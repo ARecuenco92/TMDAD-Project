@@ -7,6 +7,7 @@ import org.springframework.social.facebook.api.Post;
 import org.springframework.social.twitter.api.SearchResults;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,6 +64,12 @@ public class RestController {
 	public SearchResults twitterTimeline() {
 		return twitter.search();
 	}
+	
+	@RequestMapping(value = "/twitter/timeline/{party}", method = RequestMethod.GET)
+	@ResponseBody
+	public SearchResults twitterPartyTimeline(@PathVariable(value="party") String party) {
+		return twitter.search(party);
+	}
 
 	@RequestMapping(value = "/twitter/geolocalize", method = RequestMethod.GET)
 	@ResponseBody
@@ -80,6 +87,12 @@ public class RestController {
 	@ResponseBody
 	public List<Post> facebookTimeline(){
 		return facebook.search();
+	}
+	
+	@RequestMapping(value = "/facebook/timeline/{party}", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Post> facebookParyTimeline(@PathVariable(value="party") String party){
+		return facebook.search(party);
 	}
 	
 	@RequestMapping(value = "/chart/evolution/percentage", method = RequestMethod.GET)
