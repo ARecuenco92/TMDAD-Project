@@ -1,4 +1,4 @@
-package es.unizar.tmdad.application;
+package es.unizar.tmdad.app.service;
 
 import es.unizar.tmdad.domain.chart.Chart;
 import es.unizar.tmdad.domain.chart.ChartLogic;

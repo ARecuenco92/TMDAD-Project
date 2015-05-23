@@ -1,10 +1,10 @@
-package es.unizar.tmdad.application;
+package es.unizar.tmdad.app.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.FacebookProfile;
 import org.springframework.social.facebook.api.PagedList;
@@ -19,37 +19,28 @@ public class FacebookLookupService {
 
 	private static final int MAXIMUM_POSTS = 25;
 
-	@Value("${facebook.appId}")
-	private String appId;
-
-	@Value("${facebook.appSecret}")
-	private String appSecret;
-
-	@Value("${facebook.accesToken}")
-	private String accesToken;
+	@Autowired
+	private FacebookTemplate facebookTemplate;
 
 	public List<Post> search() {
-		Facebook facebook = new FacebookTemplate(accesToken);
-		PagedList<Post> list = facebook.feedOperations().getFeed("psoe");
-		list.addAll(facebook.feedOperations().getFeed("pp"));
-		list.addAll(facebook.feedOperations().getFeed("269212336568846"));
-		list.addAll(facebook.feedOperations().getFeed("Cs.Ciudadanos"));
+		PagedList<Post> list = facebookTemplate.feedOperations().getFeed("psoe");
+		list.addAll(facebookTemplate.feedOperations().getFeed("pp"));
+		list.addAll(facebookTemplate.feedOperations().getFeed("269212336568846"));
+		list.addAll(facebookTemplate.feedOperations().getFeed("Cs.Ciudadanos"));
 		Collections.sort(list, (Post p1, Post p2) -> p2.getCreatedTime().compareTo(p1.getCreatedTime()));
 
 		return list.subList(0, MAXIMUM_POSTS);
 	}
 
 	public List<PoliticalParty> getPoliticalParties(){
-		Facebook facebook = new FacebookTemplate(accesToken);
-
 		List<PoliticalParty> parties = new ArrayList<PoliticalParty>();
-		PoliticalParty p = getParty(facebook,"pp","blue");
+		PoliticalParty p = getParty(facebookTemplate,"pp","blue");
 		parties.add(p);
-		p = getParty(facebook,"psoe","red");
+		p = getParty(facebookTemplate,"psoe","red");
 		parties.add(p);
-		p = getParty(facebook,"Cs.Ciudadanos","orange");
+		p = getParty(facebookTemplate,"Cs.Ciudadanos","orange");
 		parties.add(p);
-		p = getParty(facebook,"269212336568846","purple");
+		p = getParty(facebookTemplate,"269212336568846","purple");
 		parties.add(p);
 
 		return parties;

@@ -1,4 +1,4 @@
-package es.unizar.tmdad.application;
+package es.unizar.tmdad.app.controller;
 
 import java.util.List;
 
@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import twitter4j.Status;
 import twitter4j.TwitterException;
+import es.unizar.tmdad.app.service.ChartService;
+import es.unizar.tmdad.app.service.FacebookLookupService;
+import es.unizar.tmdad.app.service.TwitterLookupService;
 import es.unizar.tmdad.domain.Filter;
 import es.unizar.tmdad.domain.PoliticalParty;
 import es.unizar.tmdad.domain.chart.Chart;
 
 @Controller
-public class PoliticalPartyController {
+public class RestController {
 
 	@Autowired
 	TwitterLookupService twitter;

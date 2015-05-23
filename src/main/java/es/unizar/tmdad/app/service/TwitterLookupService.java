@@ -1,55 +1,45 @@
-package es.unizar.tmdad.application;
+package es.unizar.tmdad.app.service;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.twitter.api.SearchParameters;
 import org.springframework.social.twitter.api.SearchResults;
 import org.springframework.social.twitter.api.Tweet;
-import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.api.impl.TwitterTemplate;
 import org.springframework.stereotype.Service;
 
 import twitter4j.GeoLocation;
 import twitter4j.Query;
 import twitter4j.Status;
+import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.auth.AccessToken;
 import es.unizar.tmdad.domain.Filter;
 
 @Service
 public class TwitterLookupService {
-	@Value("${twitter.consumerKey}")
-	private String consumerKey;
+	@Autowired
+	private TwitterTemplate twitterTemplate;
 
-	@Value("${twitter.consumerSecret}")
-	private String consumerSecret;
-
-	@Value("${twitter.accessToken}")
-	private String accessToken;
-
-	@Value("${twitter.accessTokenSecret}")
-	private String accessTokenSecret;
-
+	@Autowired
+	private Twitter twitter;
+	
 	public SearchResults search() {
-		Twitter twitter = new TwitterTemplate(consumerKey, consumerSecret, accessToken, accessTokenSecret);
 		SearchParameters params = new  SearchParameters("@psoe OR @ahorapodemos OR @pp OR @ciudadanoscs");
-		return twitter.searchOperations().search(params);
+		return twitterTemplate.searchOperations().search(params);
 	}
 
 	public List<Tweet> search(Filter filter){
-		Twitter twitter = new TwitterTemplate(consumerKey, consumerSecret, accessToken, accessTokenSecret);
 		List<Tweet> tweets;
 		if(filter.getUser().equals("")){
 			String query = getQuery(filter);
 			SearchParameters params = new  SearchParameters(query);
-			tweets = twitter.searchOperations().search(params).getTweets();
+			tweets = twitterTemplate.searchOperations().search(params).getTweets();
 		}
 		else{
-			tweets = twitter.timelineOperations().getUserTimeline(filter.getUser(),200);
+			tweets = twitterTemplate.timelineOperations().getUserTimeline(filter.getUser(),200);
 			tweets = filtrarTweets(tweets,filter);
 		}
 
@@ -128,26 +118,8 @@ public class TwitterLookupService {
 		}).collect(Collectors.toList());
 		return tweets;
 	}
-	//	Stream<Tweet> s = q.stream();
-	//    List<Tweet> tweets = s.filter(t -> t.getUnmodifiedText().contains(filter.getKeyWords()))
-	//	.filter(t-> {
-	//    	boolean pasa = false;
-	//    	if(filter.getPoliticalParties()==null){
-	//    		return true;
-	//    	}
-	//    	for(int i = 0; i<filter.getPoliticalParties().size() && !pasa;i++){
-	//    	 if(t.getUnmodifiedText().contains(filter.getPoliticalParties().get(i))){
-	//    		 pasa = true;
-	//    	 }
-	//    	}
-	//    	return pasa;}).collect(Collectors.toList());
 
-	public List<Status> geolocalize() throws TwitterException{
-		twitter4j.Twitter twitter = new TwitterFactory().getInstance();
-		twitter.setOAuthConsumer(consumerKey, consumerSecret);
-		AccessToken oathAccessToken = new AccessToken(accessToken, accessTokenSecret);
-		twitter.setOAuthAccessToken(oathAccessToken);
-		
+	public List<Status> geolocalize() throws TwitterException{		
 		Query query = new Query();
 		query.setQuery("@psoe OR @ahorapodemos OR @pp OR @ciudadanoscs");
 		GeoLocation geo = new GeoLocation(40.400, 3.683);
