@@ -26,6 +26,9 @@ function displayPoliticalParty(){
 }
 
 function setupTimeline() {
+	$('#timelineTwitter').html('<div class="text-center panel-knob"><input class="knob" data-max="50" data-displayInput="false"/></div>');
+	$('#timelineFacebook').html('<div class="text-center panel-knob"><input class="knob" data-max="50" data-displayInput="false"/></div>');
+	
 	$.get('twitter/timeline/'+politicalParty, function(data) {
 		var template = $('#twitterBlock').html();
 		Mustache.parse(template); 
