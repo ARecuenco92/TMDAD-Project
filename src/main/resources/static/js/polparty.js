@@ -10,6 +10,7 @@ $(document).ready(function() {
 
 function changePoliticalParty(event){
 	event.preventDefault();
+	$("#navbar").collapse('hide');
 	var nextParty = $(this).attr('id');
 	if(nextParty != politicalParty){
 		$("[id='"+politicalParty+"']").parent().removeClass('active');
