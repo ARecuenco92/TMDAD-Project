@@ -36,6 +36,11 @@ public class PoliticalPartyController {
 	public String search() {
 		return "search";
 	}
+	
+	@RequestMapping(value = "/polparty", method=RequestMethod.GET)
+	public String polparty() {
+		return "polparty";
+	}
 
 	@RequestMapping(value = "/search", headers = {"Content-type=application/json"}, method=RequestMethod.POST)
 	@ResponseBody

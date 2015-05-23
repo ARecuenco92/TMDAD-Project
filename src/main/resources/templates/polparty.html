@@ -1,0 +1,87 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Politic App</title>
+
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet"
+	href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"
+	th:href="@{/webjars/bootstrap/3.3.1/css/bootstrap.min.css}" />
+
+<!-- Custom styles for this template -->
+<link th:href="@{/css/dashboard.css}" href="../static/css/dashboard.css"
+	rel="stylesheet" />
+
+<!-- jVectorMap core CSS -->
+<link th:href="@{/webjars/jvectormap/2.0.1/jquery-jvectormap.css}"
+	rel="stylesheet" />
+
+</head>
+
+<body>
+
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Politic App</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="active"><a href="#">Home</a></li>
+					<li><a href="search">Buscar</a></li>
+					<li><a href="#">Podemos</a></li>
+					<li><a href="#">Partido Popular</a></li>
+					<li><a href="#">Partido Socialista</a></li>
+					<li><a href="#">Ciudadanos</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li class="active"><a href="#">Home</a></li>
+					<li><a href="search">Buscar</a></li>
+					<li><a href="#">Podemos</a></li>
+					<li><a href="#">Partido Popular</a></li>
+					<li><a href="#">Partido Socialista</a></li>
+					<li><a href="#">Ciudadanos</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="http://code.jquery.com/jquery-1.11.2.min.js"
+		th:src="@{/webjars/jquery/2.1.3/jquery.min.js}"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/3.3.1/js/bootstrap.min.js}"></script>
+	<script th:src="@{/webjars/jvectormap/2.0.1/jquery.jvectormap.min.js}"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/mustachejs/0.8.2/mustache.js"
+		th:src="@{/webjars/mustachejs/0.8.2/mustache.js}"></script>
+	<script th:src="@{/js/jvectormap-es-merc-en.js}"
+		src="../static/js/jvectormap-es-merc-en.js"></script>
+	<script th:src="@{/webjars/jquery-knob/1.2.11/jquery.knob.min.js}"
+		src="../static/js/jquery-knob/1.2.11/jquery.knob.min.js"></script>
+	<script th:src="@{/webjars/chartjs/1.0.2/Chart.min.js}"
+		src="../static/js/chartjs/1.0.2/Chart.min.js"></script>
+	<script th:src="@{/js/polparty.js}" src="../static/js/polparty.js"></script>
+
+</body>
+</html>

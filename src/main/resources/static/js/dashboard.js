@@ -90,16 +90,11 @@ function setMap(){
 		backgroundColor : 'none',
 		zoomButtons : false,
 		container : $('#spain-map'),
-		zoomMax : 1,
+		zoomMax : 6,
 		series : {
 			regions : [ {
 				attribute : 'fill'
 			} ]
-		},
-		markerStyle: {
-			initial: {
-				fill: '#428BCA'
-			}
 		}
 	});
 	map.series.regions[0].setValues(generateColors());
@@ -107,11 +102,39 @@ function setMap(){
 	$.get('geolocalize', function(data) {
 		var max = data.length;
 		var markers = [], latLng;
+		var mentions = [];
+		var parties;
 		for(var i = 0; i< max; i++){
 			latLng = [data[i].geoLocation.latitude, data[i].geoLocation.longitude];
+			mentions = data[i].userMentionEntities;
+			parties = 0;
+			for(var j = 0; j< mentions.length; j++){
+				if(mentions[j].screenName == 'ahorapodemos'){
+					color = "#6A205F";
+					parties ++;
+				}
+				if(mentions[j].screenName == 'PPopular'){
+					color = "#006EC6";
+					parties ++;
+				}
+				if(mentions[j].screenName == 'PSOE'){
+					color = "#D20804";
+					parties ++;
+				}
+				if(mentions[j].screenName == 'CiudadanosCs'){
+					color = "#F38725";
+					parties ++;
+				}
+				if(parties != 1){
+					color = "#F3F3F3";
+				}
+			}
 			markers[i] = {
 					latLng : latLng,
-					name : "@" + data[i].user.screenName
+					name : "@" + data[i].user.screenName,
+					style: {
+						fill: color
+					}
 			}
 		}
 		map.addMarkers(markers);
