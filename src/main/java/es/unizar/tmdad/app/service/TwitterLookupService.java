@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.social.twitter.api.SearchParameters;
 import org.springframework.social.twitter.api.SearchResults;
 import org.springframework.social.twitter.api.Tweet;
@@ -20,6 +21,18 @@ import es.unizar.tmdad.domain.Filter;
 
 @Service
 public class TwitterLookupService {
+	@Value("${twitter.ciudadanos}")
+	private String ciudadanosTwitter;
+
+	@Value("${twitter.podemos}")
+	private String podemosTwitter;
+
+	@Value("${twitter.pp}")
+	private String ppTwitter;
+
+	@Value("${twitter.psoe}")
+	private String psoeTwitter;
+	
 	@Autowired
 	private TwitterTemplate twitterTemplate;
 
@@ -27,7 +40,8 @@ public class TwitterLookupService {
 	private Twitter twitter;
 	
 	public SearchResults search() {
-		SearchParameters params = new  SearchParameters("@psoe OR @ahorapodemos OR @pp OR @ciudadanoscs");
+		String query = ciudadanosTwitter+" OR "+podemosTwitter+" OR "+ppTwitter+" OR "+psoeTwitter;
+		SearchParameters params = new  SearchParameters(query);
 		return twitterTemplate.searchOperations().search(params);
 	}
 
@@ -65,7 +79,7 @@ public class TwitterLookupService {
 			}
 		}
 		else{
-			query = "@psoe OR @ahorapodemos OR @pp OR @ciudadanoscs";
+			query = ciudadanosTwitter+" OR "+podemosTwitter+" OR "+ppTwitter+" OR "+psoeTwitter;
 		}
 		if(filter.getKeyWords().contains(" ")){
 			String[]keyWords = filter.getKeyWords().split(" ");
@@ -91,8 +105,8 @@ public class TwitterLookupService {
 				}
 			}
 			else{
-				if(texto.contains("@pp")||texto.contains("@psoe")||
-						texto.contains("@ahorapodemos")||texto.contains("@ciudadanoscs")){
+				if(texto.contains(ppTwitter)||texto.contains(psoeTwitter)||
+						texto.contains(podemosTwitter)||texto.contains(ciudadanosTwitter)){
 					return true;
 				}
 				else
@@ -119,14 +133,15 @@ public class TwitterLookupService {
 		return tweets;
 	}
 
-	public List<Status> geolocalize() throws TwitterException{		
-		Query query = new Query();
-		query.setQuery("@psoe OR @ahorapodemos OR @pp OR @ciudadanoscs");
+	public List<Status> geolocalize() throws TwitterException{	
+		String query = ciudadanosTwitter+" OR "+podemosTwitter+" OR "+ppTwitter+" OR "+psoeTwitter;
+		Query searchQuery = new Query();
+		searchQuery.setQuery(query);
 		GeoLocation geo = new GeoLocation(40.400, 3.683);
-		query.setGeoCode(geo, 1000, Query.Unit.km);
-		query.setCount(100);
+		searchQuery.setGeoCode(geo, 1000, Query.Unit.km);
+		searchQuery.setCount(100);
 		
-		return twitter.search(query).getTweets()
+		return twitter.search(searchQuery).getTweets()
 			.stream()
 			.filter(status -> status.getGeoLocation() != null)
 			.collect(Collectors.toList());

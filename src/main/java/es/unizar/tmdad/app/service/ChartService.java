@@ -1,8 +1,11 @@
 package es.unizar.tmdad.app.service;
 
+import org.springframework.stereotype.Service;
+
 import es.unizar.tmdad.domain.chart.Chart;
 import es.unizar.tmdad.domain.chart.ChartLogic;
 
+@Service
 public class ChartService {
 	
 	private ChartLogic logic;
