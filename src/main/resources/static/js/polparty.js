@@ -1,3 +1,5 @@
+var stomptClient = null;
+var subscription = null;
 var politicalParty;
 
 $(document).ready(function() {
@@ -37,6 +39,7 @@ function setupTimeline() {
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, data);
 		$('#timelineTwitter').html(rendered);
+		connect();
 	});	
 
 	$.get('facebook/timeline/'+politicalParty, function(data) {
@@ -82,4 +85,27 @@ function myDelay(value) {
 	else{
 		setTimeout(myDelay, 50, 0);
 	}   
+}
+
+function connect() {
+	var socket = new SockJS("/twitter");
+	stompClient = Stomp.over(socket);
+	stompClient.connect({}, function(frame) {
+		console.log('Connected: ' + frame);
+		subscribe(politicalParty);
+	});
+}
+
+function subscribe(party) {
+	if (subscription) {
+		subscription.unsubscribe();
+	}
+	stompClient.send("/app/search/"+party);
+	subscription = stompClient.subscribe("/queue/search/"+party, function(data) {
+		var tweet = JSON.parse(data.body);
+		var template = $('#twitterBlock').html();
+		Mustache.parse(template); 
+		var rendered = Mustache.render(template, {tweets: [tweet]});
+		$('#timelineTwitter').prepend(rendered);
+	});
 }

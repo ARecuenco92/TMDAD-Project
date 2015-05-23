@@ -9,7 +9,6 @@ $(document).ready(function() {
 	setupTimeline();
 	setupDial();
 	setChart();
-	connect();
 });
 
 function setupTimeline() {
@@ -18,6 +17,7 @@ function setupTimeline() {
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, data);
 		$('#timelineTwitter').html(rendered);
+		connect();
 	});	
 
 	$.get('facebook/timeline', function(data) {
