@@ -3,23 +3,33 @@ package es.unizar.tmdad.app.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.FacebookProfile;
 import org.springframework.social.facebook.api.PagedList;
 import org.springframework.social.facebook.api.Post;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
 
+import twitter4j.UserMentionEntity;
+import es.unizar.tmdad.domain.MyMessage;
 import es.unizar.tmdad.domain.PoliticalParty;
+import facebook4j.Facebook;
+import facebook4j.FacebookException;
+import facebook4j.Place.Location;
+import facebook4j.ResponseList;
+
+
+
+
 
 @Service
 public class FacebookLookupService {
 
 	private static final int MAXIMUM_POSTS = 25;
-	
+
 	@Value("${facebook.ciudadanos}")
 	private String ciudadanosFacebook;
 
@@ -35,6 +45,9 @@ public class FacebookLookupService {
 	@Autowired
 	private FacebookTemplate facebookTemplate;
 
+	@Autowired
+	private Facebook facebook;
+
 	public List<Post> search() {
 		PagedList<Post> list = facebookTemplate.feedOperations().getFeed(psoeFacebook);
 		list.addAll(facebookTemplate.feedOperations().getFeed(ppFacebook));
@@ -47,25 +60,49 @@ public class FacebookLookupService {
 
 	public List<PoliticalParty> getPoliticalParties(){
 		List<PoliticalParty> parties = new ArrayList<PoliticalParty>();
-		PoliticalParty p = getParty(facebookTemplate,ppFacebook,"blue");
+		PoliticalParty p = getParty(ppFacebook,"blue");
 		parties.add(p);
-		p = getParty(facebookTemplate,psoeFacebook,"red");
+		p = getParty(psoeFacebook,"red");
 		parties.add(p);
-		p = getParty(facebookTemplate,ciudadanosFacebook,"orange");
+		p = getParty(ciudadanosFacebook,"orange");
 		parties.add(p);
-		p = getParty(facebookTemplate,podemosFacebook,"purple");
+		p = getParty(podemosFacebook,"purple");
 		parties.add(p);
 
 		return parties;
 	}
 
-	public PoliticalParty getParty(Facebook facebook, String id,String color){
-		FacebookProfile profile = facebook.userOperations().getUserProfile(id);
+	public PoliticalParty getParty(String id,String color){
+		FacebookProfile profile = facebookTemplate.userOperations().getUserProfile(id);
 		String name = profile.getName();
 		String webside = profile.getWebsite();
 		String logo = "http://graph.facebook.com/"+id+"/picture";
 		PoliticalParty p = new PoliticalParty(name,color,logo,webside);
 		return p;
+	}
+
+	public List<MyMessage> geolocalize() throws FacebookException{	
+		ResponseList<facebook4j.Post> list = facebook.posts().getFeed(psoeFacebook);
+		list.addAll(facebook.posts().getFeed(ppFacebook));
+		list.addAll(facebook.posts().getFeed(podemosFacebook));
+		list.addAll(facebook.posts().getFeed(ciudadanosFacebook));
+
+		return list.stream()
+				.filter(page -> {
+					Location loc =  page.getPlace() != null?  page.getPlace().getLocation() : null;
+					return loc != null && loc.getLatitude() != null && loc.getLongitude() != null;
+				})
+				.map(page -> {
+					Location loc =  page.getPlace().getLocation();
+					MyMessage post = new MyMessage();
+					post.setScreenName(page.getFrom().getName());
+					post.setText(page.getMessage());
+					post.setLatitude(loc.getLatitude());
+					post.setLongitude(loc.getLongitude());
+					
+					return post;
+				})
+				.collect(Collectors.toList());
 	}
 
 }

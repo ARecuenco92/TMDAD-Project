@@ -14,10 +14,11 @@ import org.springframework.stereotype.Service;
 
 import twitter4j.GeoLocation;
 import twitter4j.Query;
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.UserMentionEntity;
 import es.unizar.tmdad.domain.Filter;
+import es.unizar.tmdad.domain.MyMessage;
 
 @Service
 public class TwitterLookupService {
@@ -133,7 +134,7 @@ public class TwitterLookupService {
 		return tweets;
 	}
 
-	public List<Status> geolocalize() throws TwitterException{	
+	public List<MyMessage> geolocalize() throws TwitterException{	
 		String query = ciudadanosTwitter+" OR "+podemosTwitter+" OR "+ppTwitter+" OR "+psoeTwitter;
 		Query searchQuery = new Query();
 		searchQuery.setQuery(query);
@@ -144,6 +145,23 @@ public class TwitterLookupService {
 		return twitter.search(searchQuery).getTweets()
 			.stream()
 			.filter(status -> status.getGeoLocation() != null)
+			.map(status -> {
+					GeoLocation loc =  status.getGeoLocation();
+					MyMessage post = new MyMessage();
+					post.setScreenName(status.getUser().getScreenName());
+					post.setText(status.getText());
+					post.setLatitude(loc.getLatitude());
+					post.setLongitude(loc.getLongitude());
+					
+					UserMentionEntity[] mentions = status.getUserMentionEntities();
+					for(int i = 0; i < mentions.length; i++){
+						post.addMention(mentions[i].getScreenName());
+					}
+					
+					post.setRelevance(status.getRetweetCount()+status.getFavoriteCount());
+					
+					return post;
+				})
 			.collect(Collectors.toList());
 	}
 }

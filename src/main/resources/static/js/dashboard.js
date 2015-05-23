@@ -9,14 +9,14 @@ $(document).ready(function() {
 });
 
 function setupTimeline() {
-	$.get('timeline', function(data) {
+	$.get('twitter/timeline', function(data) {
 		var template = $('#twitterBlock').html();
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, data);
 		$('#timelineTwitter').html(rendered);
 	});	
 
-	$.get('timelineFacebook', function(data) {
+	$.get('facebook/timeline', function(data) {
 		var template = $('#facebookBlock').html();
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, data);
@@ -99,46 +99,56 @@ function setMap(){
 	});
 	map.series.regions[0].setValues(generateColors());
 
-	$.get('geolocalize', function(data) {
-		var max = data.length;
-		var markers = [], latLng;
-		var mentions = [];
-		var parties;
-		for(var i = 0; i< max; i++){
-			latLng = [data[i].geoLocation.latitude, data[i].geoLocation.longitude];
-			mentions = data[i].userMentionEntities;
-			parties = 0;
-			for(var j = 0; j< mentions.length; j++){
-				if(mentions[j].screenName == 'ahorapodemos'){
-					color = "#6A205F";
-					parties ++;
-				}
-				if(mentions[j].screenName == 'PPopular'){
-					color = "#006EC6";
-					parties ++;
-				}
-				if(mentions[j].screenName == 'PSOE'){
-					color = "#D20804";
-					parties ++;
-				}
-				if(mentions[j].screenName == 'CiudadanosCs'){
-					color = "#F38725";
-					parties ++;
-				}
-				if(parties != 1){
-					color = "#F3F3F3";
-				}
+	$.get('twitter/geolocalize', function(data) {
+		addMarkers(map, data);
+	});
+	
+	$.get('facebook/geolocalize', function(data) {
+		addMarkers(map, data);
+	});	
+}
+
+function addMarkers(map, data){
+	var max = data.length;
+	var markers = [], latLng;
+	var mentions = [];
+	var parties;
+	for(var i = 0; i< max; i++){
+		latLng = [data[i].latitude, data[i].longitude];
+		mentions = data[i].mentions;
+		parties = 0;
+		for(var j = 0; j< mentions.length; j++){
+			if(mentions[j] == 'ahorapodemos'){
+				color = "#6A205F";
+				parties ++;
 			}
-			markers[i] = {
-					latLng : latLng,
-					name : "@" + data[i].user.screenName,
-					style: {
-						fill: color
-					}
+			if(mentions[j] == 'PPopular'){
+				color = "#006EC6";
+				parties ++;
+			}
+			if(mentions[j] == 'PSOE'){
+				color = "#D20804";
+				parties ++;
+			}
+			if(mentions[j] == 'CiudadanosCs'){
+				color = "#F38725";
+				parties ++;
 			}
 		}
-		map.addMarkers(markers);
-	});	
+		if(parties != 1){
+			color = "#F3F3F3";
+		}
+		markers[i] = {
+				latLng : latLng,
+				name : "@" + data[i].screenName,
+				style: {
+					fill: color,
+					stroke: '#DFDFDF',
+					r: data[i].relevance + 5
+				}
+		}
+	}
+	map.addMarkers(markers);
 }
 
 function setChart(){
@@ -200,7 +210,7 @@ function setChart(){
 		var ctx = $("#evolutionChart").get(0).getContext("2d");
 		var myLineChart = new Chart(ctx).Line(chartData, options);
 	});
-	
+
 	$.get('chart/evolution/absolute', function(data) {
 		var charts = data.data;
 		podemos.data = charts[0].dataSet;
@@ -216,7 +226,7 @@ function setChart(){
 				scaleLabel : "<%= value + ' seguidores' %>",
 				multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value + ' seguidores'%>"
 		};
-		
+
 		var ctx = $("#evolutionChart2").get(0).getContext("2d");
 		var myLineChart = new Chart(ctx).Line(chartData, options);
 	});

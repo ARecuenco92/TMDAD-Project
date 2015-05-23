@@ -12,14 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import twitter4j.Status;
 import twitter4j.TwitterException;
 import es.unizar.tmdad.app.service.ChartService;
 import es.unizar.tmdad.app.service.FacebookLookupService;
 import es.unizar.tmdad.app.service.TwitterLookupService;
 import es.unizar.tmdad.domain.Filter;
+import es.unizar.tmdad.domain.MyMessage;
 import es.unizar.tmdad.domain.PoliticalParty;
 import es.unizar.tmdad.domain.chart.Chart;
+import facebook4j.FacebookException;
 
 @Controller
 public class RestController {
@@ -51,27 +52,33 @@ public class RestController {
 		return twitter.search(filter);
 	}
 
-	@RequestMapping(value = "/timeline", method = RequestMethod.GET)
-	@ResponseBody
-	public SearchResults timeline() {
-		return twitter.search();
-	}
-
 	@RequestMapping(value = "/resumeParties", method = RequestMethod.GET)
 	@ResponseBody
 	public List<PoliticalParty> getPoliticalParties(){
 		return facebook.getPoliticalParties();
 	}
-
-	@RequestMapping(value = "/geolocalize", method = RequestMethod.GET)
+	
+	@RequestMapping(value = "/twitter/timeline", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Status> geolocalize() throws TwitterException {
-		return twitter.geolocalize();
+	public SearchResults twitterTimeline() {
+		return twitter.search();
 	}
 
-	@RequestMapping(value = "/timelineFacebook", method = RequestMethod.GET)
+	@RequestMapping(value = "/twitter/geolocalize", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Post> searchFace(){
+	public List<MyMessage> twitterGeolocalize() throws TwitterException {
+		return twitter.geolocalize();
+	}
+	
+	@RequestMapping(value = "/facebook/geolocalize", method = RequestMethod.GET)
+	@ResponseBody
+	public List<MyMessage> facebookGeolocalize() throws FacebookException {
+		return facebook.geolocalize();
+	}
+
+	@RequestMapping(value = "/facebook/timeline", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Post> facebookTimeline(){
 		return facebook.search();
 	}
 	
