@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.social.twitter.api.FilterStreamParameters;
@@ -20,6 +21,17 @@ import es.unizar.tmdad.domain.PoliticalTweet;
 
 @Service
 public class TwitterStreamService {
+	@Value("${twitter.ciudadanos}")
+	private String ciudadanosTwitter;
+
+	@Value("${twitter.podemos}")
+	private String podemosTwitter;
+
+	@Value("${twitter.pp}")
+	private String ppTwitter;
+
+	@Value("${twitter.psoe}")
+	private String psoeTwitter;
 	
 	@Autowired
 	private SimpMessageSendingOperations ops;
@@ -34,9 +46,13 @@ public class TwitterStreamService {
 
 	@PostConstruct
 	public void initialize() {
-		FilterStreamParameters fsp = new FilterStreamParameters();
-		fsp.addLocation(-180, -90, 180, 90);
-		stream = twitterTemplate.streamingOperations().filter(fsp, Arrays.asList(integrationStreamListener));		
+		FilterStreamParameters params = new FilterStreamParameters();
+		params.track(podemosTwitter);
+		params.track(ppTwitter);
+		params.track(psoeTwitter);
+		params.track(ciudadanosTwitter);
+		
+		stream = twitterTemplate.streamingOperations().filter(params, Arrays.asList(integrationStreamListener));		
 	}
 	
 	public void sendTweet(PoliticalTweet tweet) {

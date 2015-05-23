@@ -252,6 +252,9 @@ function subscribe(party) {
 	stompClient.send("/app/search/"+party);
 	subscription = stompClient.subscribe("/queue/search/"+party, function(data) {
 		var tweet = JSON.parse(data.body);
-		console.log(tweet);
+		var template = $('#twitterBlock').html();
+		Mustache.parse(template); 
+		var rendered = Mustache.render(template, {tweets: [tweet]});
+		$('#timelineTwitter').prepend(rendered);
 	});
 }
