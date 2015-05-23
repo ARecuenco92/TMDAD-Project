@@ -18,7 +18,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.UserMentionEntity;
 import es.unizar.tmdad.domain.Filter;
-import es.unizar.tmdad.domain.MyMessage;
+import es.unizar.tmdad.domain.GeoMessage;
 
 @Service
 public class TwitterLookupService {
@@ -134,7 +134,7 @@ public class TwitterLookupService {
 		return tweets;
 	}
 
-	public List<MyMessage> geolocalize() throws TwitterException{	
+	public List<GeoMessage> geolocalize() throws TwitterException{	
 		String query = ciudadanosTwitter+" OR "+podemosTwitter+" OR "+ppTwitter+" OR "+psoeTwitter;
 		Query searchQuery = new Query();
 		searchQuery.setQuery(query);
@@ -147,7 +147,7 @@ public class TwitterLookupService {
 			.filter(status -> status.getGeoLocation() != null)
 			.map(status -> {
 					GeoLocation loc =  status.getGeoLocation();
-					MyMessage post = new MyMessage();
+					GeoMessage post = new GeoMessage();
 					post.setScreenName(status.getUser().getScreenName());
 					post.setText(status.getText());
 					post.setLatitude(loc.getLatitude());

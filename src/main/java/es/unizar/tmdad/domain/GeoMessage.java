@@ -3,7 +3,7 @@ package es.unizar.tmdad.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyMessage {
+public class GeoMessage {
 
 	public String screenName;
 	public String text;
@@ -12,7 +12,7 @@ public class MyMessage {
 	public double longitude;
 	public List<String> mentions;
 	
-	public MyMessage(){
+	public GeoMessage(){
 		mentions = new ArrayList<String>();
 	}
 	

@@ -14,7 +14,7 @@ import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
 
 import twitter4j.UserMentionEntity;
-import es.unizar.tmdad.domain.MyMessage;
+import es.unizar.tmdad.domain.GeoMessage;
 import es.unizar.tmdad.domain.PoliticalParty;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
@@ -81,7 +81,7 @@ public class FacebookLookupService {
 		return p;
 	}
 
-	public List<MyMessage> geolocalize() throws FacebookException{	
+	public List<GeoMessage> geolocalize() throws FacebookException{	
 		ResponseList<facebook4j.Post> list = facebook.posts().getFeed(psoeFacebook);
 		list.addAll(facebook.posts().getFeed(ppFacebook));
 		list.addAll(facebook.posts().getFeed(podemosFacebook));
@@ -94,7 +94,7 @@ public class FacebookLookupService {
 				})
 				.map(page -> {
 					Location loc =  page.getPlace().getLocation();
-					MyMessage post = new MyMessage();
+					GeoMessage post = new GeoMessage();
 					post.setScreenName(page.getFrom().getName());
 					post.setText(page.getMessage());
 					post.setLatitude(loc.getLatitude());

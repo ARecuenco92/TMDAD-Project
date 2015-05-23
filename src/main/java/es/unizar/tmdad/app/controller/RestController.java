@@ -17,7 +17,7 @@ import es.unizar.tmdad.app.service.ChartService;
 import es.unizar.tmdad.app.service.FacebookLookupService;
 import es.unizar.tmdad.app.service.TwitterLookupService;
 import es.unizar.tmdad.domain.Filter;
-import es.unizar.tmdad.domain.MyMessage;
+import es.unizar.tmdad.domain.GeoMessage;
 import es.unizar.tmdad.domain.PoliticalParty;
 import es.unizar.tmdad.domain.chart.Chart;
 import facebook4j.FacebookException;
@@ -66,13 +66,13 @@ public class RestController {
 
 	@RequestMapping(value = "/twitter/geolocalize", method = RequestMethod.GET)
 	@ResponseBody
-	public List<MyMessage> twitterGeolocalize() throws TwitterException {
+	public List<GeoMessage> twitterGeolocalize() throws TwitterException {
 		return twitter.geolocalize();
 	}
 	
 	@RequestMapping(value = "/facebook/geolocalize", method = RequestMethod.GET)
 	@ResponseBody
-	public List<MyMessage> facebookGeolocalize() throws FacebookException {
+	public List<GeoMessage> facebookGeolocalize() throws FacebookException {
 		return facebook.geolocalize();
 	}
 
