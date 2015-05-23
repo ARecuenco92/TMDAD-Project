@@ -101,10 +101,10 @@
 					</div>
 				</div>
 				<div class="col-sm-12 col-md-12">
-					<canvas id="evolutionChart" style="width:100%;height:400px"></canvas>
+					<canvas id="evolutionChart" style="width: 100%; height: 400px"></canvas>
 				</div>
 				<div class="col-sm-12 col-md-12">
-					<canvas id="evolutionChart2" style="width:100%;height:400px"></canvas>
+					<canvas id="evolutionChart2" style="width: 100%; height: 400px"></canvas>
 				</div>
 			</div>
 		</div>
@@ -126,6 +126,12 @@
 		src="../static/js/jvectormap-es-merc-en.js"></script>
 	<script th:src="@{/webjars/chartjs/1.0.2/Chart.min.js}"
 		src="../static/js/chartjs/1.0.2/Chart.min.js"></script>
+	<script
+		src="http://cdn.jsdelivr.net/webjars/sockjs-client/0.3.4-1/sockjs.js"
+		th:src="@{/webjars/sockjs-client/0.3.4-1/sockjs.js}"></script>
+	<script
+		src="http://cdn.jsdelivr.net/webjars/stomp-websocket/2.3.1-1/stomp.js"
+		th:src="@{/webjars/stomp-websocket/2.3.1-1/stomp.js}"></script>
 	<script th:src="@{/js/dashboard.js}" src="../static/js/dashboard.js"></script>
 
 	<!-- Latest compiled and minified JavaScript -->

@@ -10,7 +10,9 @@ $(document).ready(function() {
 
 function changePoliticalParty(event){
 	event.preventDefault();
-	$("#navbar").collapse('hide');
+	if($("#navbar").attr('aria-expanded')){
+		$("#navbar").collapse('hide');	
+	}
 	var nextParty = $(this).attr('id');
 	if(nextParty != politicalParty){
 		$("[id='"+politicalParty+"']").parent().removeClass('active');

@@ -1,3 +1,6 @@
+var stomptClient = null;
+var subscription = null;
+
 $(document).ready(function() {
 	if($('.panel-political-parties').css('display') !== 'none'){
 		resumeParties();	
@@ -6,6 +9,7 @@ $(document).ready(function() {
 	setupTimeline();
 	setupDial();
 	setChart();
+	connect();
 });
 
 function setupTimeline() {
@@ -102,7 +106,7 @@ function setMap(){
 	$.get('twitter/geolocalize', function(data) {
 		addMarkers(map, data);
 	});
-	
+
 	$.get('facebook/geolocalize', function(data) {
 		addMarkers(map, data);
 	});	
@@ -229,5 +233,25 @@ function setChart(){
 
 		var ctx = $("#evolutionChart2").get(0).getContext("2d");
 		var myLineChart = new Chart(ctx).Line(chartData, options);
+	});
+}
+
+function connect() {
+	var socket = new SockJS("/twitter");
+	stompClient = Stomp.over(socket);
+	stompClient.connect({}, function(frame) {
+		console.log('Connected: ' + frame);
+		subscribe("podemos");
+		subscribe("pp");
+		subscribe("psoe");
+		subscribe("ciudadanos");
+	});
+}
+
+function subscribe(party) {
+	stompClient.send("/app/search/"+party);
+	subscription = stompClient.subscribe("/queue/search/"+party, function(data) {
+		var tweet = JSON.parse(data.body);
+		console.log(tweet);
 	});
 }
