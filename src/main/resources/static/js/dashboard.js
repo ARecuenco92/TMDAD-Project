@@ -270,6 +270,6 @@ function facebookSubscribe(party){
 		var template = $('#facebookBlock').html();
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, {posts: [post]});
-		$('#timelineFacebook').html(rendered);
+		$('#timelineFacebook').prepend(rendered);
 	});
 }
