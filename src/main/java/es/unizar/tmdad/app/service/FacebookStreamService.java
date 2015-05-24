@@ -1,50 +1,52 @@
 package es.unizar.tmdad.app.service;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.social.facebook.api.PagedList;
 import org.springframework.social.facebook.api.Post;
-import org.springframework.social.facebook.api.impl.FacebookTemplate;
-import org.springframework.stereotype.Service;
 import org.springframework.util.MimeTypeUtils;
 
-@Service
-public class FacebookStreamService {
+@Configuration
+public class FacebookStreamService extends FacebookService{
 	
-	@Value("${facebook.ciudadanos}")
-	private String ciudadanosFacebook;
-
-	@Value("${facebook.podemos}")
-	private String podemosFacebook;
-
-	@Value("${facebook.pp}")
-	private String ppFacebook;
-
-	@Value("${facebook.psoe}")
-	private String psoeFacebook;
-	
-	@Autowired
-	private FacebookTemplate facebookTemplate;
+	private Date podemosLastPost;
+	private Date ppLastPost;
+	private Date psoeLastPost;
+	private Date ciudadanosLastPost;
 	
 	@Autowired
 	private SimpMessageSendingOperations ops;
 	
-	@Scheduled(fixedDelay=5000)
 	public void sendPost() {
-		sendPost(psoeFacebook);
+		sendPost(podemosFacebook);
 	}
 	
 	private void sendPost(String party){
-		PagedList<Post> list = facebookTemplate.feedOperations().getFeed(party);
+		podemosLastPost = podemosLastPost != null? podemosLastPost : lastPost; 
+		List<Post> posts = facebookTemplate.feedOperations()
+				.getFeed(party)
+				.stream()
+				.filter(post ->{
+					return post.getCreatedTime()!= null && podemosLastPost!= null && post.getCreatedTime().after(podemosLastPost);
+				})
+				.collect(Collectors.toList());
 		Map<String, Object> map = new HashMap<>();
 		map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
-		ops.convertAndSend("/queue/facebook/"+party, list.get(0), map);
+		Collections.sort(posts, (Post p1, Post p2) -> p2.getCreatedTime().compareTo(p1.getCreatedTime()));
+		
+		if(posts.size()>0){
+			podemosLastPost = posts.get(0).getCreatedTime();
+		}
+		
+		posts.stream().forEach(post -> ops.convertAndSend("/queue/facebook/"+party, posts.get(0), map));
 	}
 
 }

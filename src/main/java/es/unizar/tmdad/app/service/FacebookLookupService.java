@@ -5,43 +5,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.social.facebook.api.FacebookProfile;
 import org.springframework.social.facebook.api.PagedList;
 import org.springframework.social.facebook.api.Post;
-import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
 
 import es.unizar.tmdad.domain.GeoMessage;
 import es.unizar.tmdad.domain.PoliticalParty;
-import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.Place.Location;
 import facebook4j.ResponseList;
 
 @Service
-public class FacebookLookupService {
-
-	private static final int MAXIMUM_POSTS = 25;
-
-	@Value("${facebook.ciudadanos}")
-	private String ciudadanosFacebook;
-
-	@Value("${facebook.podemos}")
-	private String podemosFacebook;
-
-	@Value("${facebook.pp}")
-	private String ppFacebook;
-
-	@Value("${facebook.psoe}")
-	private String psoeFacebook;
-
-	@Autowired
-	private FacebookTemplate facebookTemplate;
-
-	@Autowired
-	private Facebook facebook;
+public class FacebookLookupService extends FacebookService{
 
 	public List<Post> search() {
 		PagedList<Post> list = facebookTemplate.feedOperations().getFeed(psoeFacebook);
@@ -50,7 +26,10 @@ public class FacebookLookupService {
 		list.addAll(facebookTemplate.feedOperations().getFeed(ciudadanosFacebook));
 		Collections.sort(list, (Post p1, Post p2) -> p2.getCreatedTime().compareTo(p1.getCreatedTime()));
 
-		return list.subList(0, MAXIMUM_POSTS);
+		List<Post> posts = list.subList(0, MAXIMUM_POSTS);
+		
+		lastPost = posts.get(0).getCreatedTime();
+		return posts;
 	}
 	
 	public List<Post> search(String party) {
