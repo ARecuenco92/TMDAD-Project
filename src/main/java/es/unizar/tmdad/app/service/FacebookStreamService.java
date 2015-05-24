@@ -26,13 +26,13 @@ public class FacebookStreamService extends FacebookService{
 	private SimpMessageSendingOperations ops;
 	
 	public void sendPost() {
-		sendPost(podemosFacebook);
+		sendPost("podemos");
 	}
 	
 	private void sendPost(String party){
 		podemosLastPost = podemosLastPost != null? podemosLastPost : lastPost; 
 		List<Post> posts = facebookTemplate.feedOperations()
-				.getFeed(party)
+				.getFeed(podemosFacebook)
 				.stream()
 				.filter(post ->{
 					return post.getCreatedTime()!= null && podemosLastPost!= null && post.getCreatedTime().after(podemosLastPost);
@@ -46,7 +46,7 @@ public class FacebookStreamService extends FacebookService{
 			podemosLastPost = posts.get(0).getCreatedTime();
 		}
 		
-		posts.stream().forEach(post -> ops.convertAndSend("/queue/facebook/"+party, posts.get(0), map));
+		posts.stream().forEach(post -> ops.convertAndSend("/queue/facebook/"+party, post, map));
 	}
 
 }

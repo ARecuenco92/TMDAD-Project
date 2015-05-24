@@ -266,6 +266,10 @@ function twitterSubscribe(party) {
 function facebookSubscribe(party){
 	stompClient.send("/app/facebook/"+party);
 	subscription = stompClient.subscribe("/queue/facebook/"+party, function(data) {
-		alert(data);
+		var post = JSON.parse(data.body);
+		var template = $('#facebookBlock').html();
+		Mustache.parse(template); 
+		var rendered = Mustache.render(template, {posts: [post]});
+		$('#timelineFacebook').html(rendered);
 	});
 }
