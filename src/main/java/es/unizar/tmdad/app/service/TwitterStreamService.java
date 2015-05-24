@@ -58,7 +58,7 @@ public class TwitterStreamService {
 	public void sendTweet(PoliticalTweet tweet) {
 		Map<String, Object> map = new HashMap<>();
 		map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
-		ops.convertAndSend("/queue/search/"+tweet.getPoliticalParty(), tweet.getTweet(), map);
+		ops.convertAndSend("/queue/twitter/"+tweet.getPoliticalParty(), tweet.getTweet(), map);
 	}
 
 	public Stream getStream() {

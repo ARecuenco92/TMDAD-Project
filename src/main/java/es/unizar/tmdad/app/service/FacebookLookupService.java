@@ -20,10 +20,6 @@ import facebook4j.FacebookException;
 import facebook4j.Place.Location;
 import facebook4j.ResponseList;
 
-
-
-
-
 @Service
 public class FacebookLookupService {
 

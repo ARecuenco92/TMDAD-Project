@@ -237,24 +237,35 @@ function setChart(){
 }
 
 function connect() {
-	var socket = new SockJS("/twitter");
+	var socket = new SockJS("/political");
 	stompClient = Stomp.over(socket);
 	stompClient.connect({}, function(frame) {
 		console.log('Connected: ' + frame);
-		subscribe("podemos");
-		subscribe("pp");
-		subscribe("psoe");
-		subscribe("ciudadanos");
+		twitterSubscribe("podemos");
+		twitterSubscribe("pp");
+		twitterSubscribe("psoe");
+		twitterSubscribe("ciudadanos");
+		facebookSubscribe("podemos");
+		facebookSubscribe("pp");
+		facebookSubscribe("psoe");
+		facebookSubscribe("ciudadanos");
 	});
 }
 
-function subscribe(party) {
+function twitterSubscribe(party) {
 	stompClient.send("/app/search/"+party);
-	subscription = stompClient.subscribe("/queue/search/"+party, function(data) {
+	subscription = stompClient.subscribe("/queue/twitter/"+party, function(data) {
 		var tweet = JSON.parse(data.body);
 		var template = $('#twitterBlock').html();
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, {tweets: [tweet]});
 		$('#timelineTwitter').prepend(rendered);
+	});
+}
+
+function facebookSubscribe(party){
+	stompClient.send("/app/facebook/"+party);
+	subscription = stompClient.subscribe("/queue/facebook/"+party, function(data) {
+		alert(data);
 	});
 }
