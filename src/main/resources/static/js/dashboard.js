@@ -269,7 +269,7 @@ function facebookSubscribe(party){
 		var post = JSON.parse(data.body);
 		var template = $('#facebookBlock').html();
 		Mustache.parse(template); 
-		var rendered = Mustache.render(template, {posts: [post]});
+		var rendered = Mustache.render(template, [post]);
 		$('#timelineFacebook').prepend(rendered);
 	});
 }
