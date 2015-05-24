@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import twitter4j.GeoLocation;
 import twitter4j.Query;
+import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.UserMentionEntity;
@@ -23,6 +24,8 @@ import es.unizar.tmdad.domain.GeoMessage;
 
 @Service
 public class TwitterLookupService {
+	private static final int MAX_COUNT = 100;
+
 	@Value("${twitter.ciudadanos}")
 	private String ciudadanosTwitter;
 
@@ -165,10 +168,22 @@ public class TwitterLookupService {
 		searchQuery.setQuery(query);
 		GeoLocation geo = new GeoLocation(40.400, 3.683);
 		searchQuery.setGeoCode(geo, 1000, Query.Unit.km);
-		searchQuery.setCount(100);
+		searchQuery.setCount(MAX_COUNT);
 		
-		return twitter.search(searchQuery).getTweets()
-			.stream()
+		List<Status> tweets = twitter.search(searchQuery).getTweets();
+		searchQuery.setMaxId(tweets.get(MAX_COUNT-1).getId());
+		
+		List<Status> tweets2 = twitter.search(searchQuery).getTweets();
+		searchQuery.setMaxId(tweets2.get(MAX_COUNT-1).getId());
+		
+		List<Status> tweets3 = twitter.search(searchQuery).getTweets();
+		searchQuery.setMaxId(tweets3.get(MAX_COUNT-1).getId());
+		
+		tweets2.addAll(twitter.search(searchQuery).getTweets());
+		tweets.addAll(tweets2);
+		tweets.addAll(tweets3);
+		
+		return tweets.stream()
 			.filter(status -> status.getGeoLocation() != null)
 			.map(status -> {
 					GeoLocation loc =  status.getGeoLocation();
@@ -183,7 +198,7 @@ public class TwitterLookupService {
 						post.addMention(mentions[i].getScreenName());
 					}
 					
-					post.setRelevance(status.getRetweetCount()+status.getFavoriteCount());
+					post.setRelevance((status.getRetweetCount()*2+status.getFavoriteCount())/3 + 1);
 					
 					return post;
 				})

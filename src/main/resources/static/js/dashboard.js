@@ -148,7 +148,7 @@ function addMarkers(map, data){
 				style: {
 					fill: color,
 					stroke: '#DFDFDF',
-					r: data[i].relevance + 5
+					r: Math.min(data[i].relevance + 5, 8)
 				}
 		}
 	}
