@@ -25,7 +25,7 @@ import es.unizar.tmdad.domain.PoliticalTweet;
 @IntegrationComponentScan
 @ComponentScan
 public class TwitterFlow {
-	
+
 	@Value("${twitter.ciudadanos}")
 	private String ciudadanosTwitter;
 
@@ -37,7 +37,7 @@ public class TwitterFlow {
 
 	@Value("${twitter.psoe}")
 	private String psoeTwitter;
-	
+
 	@Bean
 	public DirectChannel requestChannel() {
 		return new DirectChannel();
@@ -45,18 +45,28 @@ public class TwitterFlow {
 
 	@Bean
 	public IntegrationFlow sendTweet() {
-		// Transforms the specified Tweet to a new TargetedTweet including the queries contained in the Tweet
-		GenericTransformer<Tweet, PoliticalTweet> transform = (Tweet tweet) -> {		
+		return IntegrationFlows.from(requestChannel())
+				.filter(object -> object instanceof Tweet)
+				.transform(transformToPoliticalTweet())
+				.split(PoliticalTweet.class,  splitPoliticalTweets())
+				.handle("twitterStreamService", "sendTweet")
+				.get();
+	}
+
+	// Transforms the specified Tweet to a new TargetedTweet including the queries contained in the Tweet
+	private GenericTransformer<Tweet, PoliticalTweet> transformToPoliticalTweet(){	
+		return tweet -> {
 			PoliticalTweet polTweet = new PoliticalTweet();
 			polTweet.setTweet(tweet);
 			return polTweet;
 		};
+	}
 
-		// Splits the specified Tweet in a List of Tweets
-		Function<PoliticalTweet, ?> split = polTweet ->{  
+	private Function<PoliticalTweet, ?> splitPoliticalTweets(){
+		return polTweet ->{  
 			List<PoliticalTweet> list = new ArrayList<PoliticalTweet>();
 			String text = polTweet.getTweet().getText();
-			
+
 			PoliticalTweet tweet;
 			if(text.contains(podemosTwitter)){
 				tweet = new PoliticalTweet();
@@ -64,21 +74,21 @@ public class TwitterFlow {
 				tweet.setTweet(polTweet.getTweet());
 				list.add(tweet);
 			}
-			
+
 			if(text.contains(ppTwitter)){
 				tweet = new PoliticalTweet();
 				tweet.setPoliticalParty("pp");
 				tweet.setTweet(polTweet.getTweet());
 				list.add(tweet);
 			}
-			
+
 			if(text.contains(psoeTwitter)){
 				tweet = new PoliticalTweet();
 				tweet.setPoliticalParty("psoe");
 				tweet.setTweet(polTweet.getTweet());
 				list.add(tweet);
 			}
-			
+
 			if(text.contains(ciudadanosTwitter)){
 				tweet = new PoliticalTweet();
 				tweet.setPoliticalParty("ciudadanos");
@@ -87,13 +97,6 @@ public class TwitterFlow {
 			}
 			return list;
 		};
-			
-		return IntegrationFlows.from(requestChannel())
-				.filter(object -> object instanceof Tweet)
-				.transform(transform)
-				.split(PoliticalTweet.class,  split)
-				.handle("twitterStreamService", "sendTweet")
-				.get();
 	}
 
 }

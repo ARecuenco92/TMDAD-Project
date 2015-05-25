@@ -1,5 +1,6 @@
 var stomptClient = null;
 var subscription = null;
+var dict = {};
 var politicalParty;
 
 $(document).ready(function() {
@@ -26,20 +27,25 @@ function changePoliticalParty(event){
 
 function displayPoliticalParty(){
 	$("[id='"+politicalParty+"']").parent().addClass('active');
+	clear();
 	setupTimeline();
 	setupDial();
 }
 
-function setupTimeline() {
+function clear(){
 	$('#timelineTwitter').html('<div class="text-center panel-knob"><input class="knob" data-max="50" data-displayInput="false"/></div>');
 	$('#timelineFacebook').html('<div class="text-center panel-knob"><input class="knob" data-max="50" data-displayInput="false"/></div>');
-	
+	$('#twitterTrends').html("");
+}
+
+function setupTimeline() {	
 	$.get('twitter/timeline/'+politicalParty, function(data) {
 		var template = $('#twitterBlock').html();
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, data);
 		$('#timelineTwitter').html(rendered);
 		connect();
+		getTrends(data.tweets);
 	});	
 
 	$.get('facebook/timeline/'+politicalParty, function(data) {
@@ -59,6 +65,43 @@ function setupTimeline() {
 		$('#timelineFacebook').css("display", "block");
 	});
 
+}
+
+function getTrends(tweets){
+	var max = tweets.length;
+	var trends;
+	for(var i = 0; i < max; i++){
+		addTrend(tweets[i]);
+	}
+	sortTrends();
+}
+
+function addTrend(tweet){
+	var trends = tweet.entities.hashTags;
+	for(var j = 0; j < trends.length; j++){
+		dict[trends[j].text] = dict[trends[j].text] === undefined? 1: dict[trends[j].text] + 1;
+	}
+}
+
+function sortTrends(){
+	// Create items array
+	var items = Object.keys(dict).map(function(key) {
+	    return [key, dict[key]];
+	});
+	
+	// Sort the array based on the second element
+	items.sort(function(first, second) {
+	    return second[1] - first[1];
+	});
+	
+	var trends = items.slice(0, 5).map(function(item) {
+		return {trend: "#" + item[0], count : item[1]};
+	});
+	
+	var template = $('#trendsBlock').html();
+	Mustache.parse(template); 
+	var rendered = Mustache.render(template, trends);
+	$('#twitterTrends').html(rendered);
 }
 
 function setupDial(){
@@ -108,12 +151,18 @@ function twitterSubscribe(party) {
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, {tweets: [tweet]});
 		$('#timelineTwitter').prepend(rendered);
+		addTrend(tweet);
+		sortTrends();
 	});
 }
 
 function facebookSubscribe(party){
 	stompClient.send("/app/facebook/"+party);
 	subscription = stompClient.subscribe("/queue/facebook/"+party, function(data) {
-		alert(data);
+		var post = JSON.parse(data.body);
+		var template = $('#facebookBlock').html();
+		Mustache.parse(template); 
+		var rendered = Mustache.render(template, [post]);
+		$('#timelineFacebook').prepend(rendered);
 	});
 }

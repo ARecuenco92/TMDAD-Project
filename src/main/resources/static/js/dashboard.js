@@ -1,5 +1,6 @@
 var stomptClient = null;
 var subscription = null;
+var dict = {};
 
 $(document).ready(function() {
 	if($('.panel-political-parties').css('display') !== 'none'){
@@ -18,6 +19,7 @@ function setupTimeline() {
 		var rendered = Mustache.render(template, data);
 		$('#timelineTwitter').html(rendered);
 		connect();
+		getTrends(data.tweets);
 	});	
 
 	$.get('facebook/timeline', function(data) {
@@ -37,6 +39,43 @@ function setupTimeline() {
 		$('#timelineFacebook').css("display", "block");
 	});
 
+}
+
+function getTrends(tweets){
+	var max = tweets.length;
+	var trends;
+	for(var i = 0; i < max; i++){
+		addTrend(tweets[i]);
+	}
+	sortTrends();
+}
+
+function addTrend(tweet){
+	var trends = tweet.entities.hashTags;
+	for(var j = 0; j < trends.length; j++){
+		dict[trends[j].text] = dict[trends[j].text] === undefined? 1: dict[trends[j].text] + 1;
+	}
+}
+
+function sortTrends(){
+	// Create items array
+	var items = Object.keys(dict).map(function(key) {
+	    return [key, dict[key]];
+	});
+	
+	// Sort the array based on the second element
+	items.sort(function(first, second) {
+	    return second[1] - first[1];
+	});
+	
+	var trends = items.slice(0, 5).map(function(item) {
+		return {trend: "#" + item[0], count : item[1]};
+	});
+	
+	var template = $('#trendsBlock').html();
+	Mustache.parse(template); 
+	var rendered = Mustache.render(template, trends);
+	$('#twitterTrends').html(rendered);
 }
 
 function resumeParties(){
@@ -253,13 +292,15 @@ function connect() {
 }
 
 function twitterSubscribe(party) {
-	stompClient.send("/app/search/"+party);
+	stompClient.send("/app/twitter/"+party);
 	subscription = stompClient.subscribe("/queue/twitter/"+party, function(data) {
 		var tweet = JSON.parse(data.body);
 		var template = $('#twitterBlock').html();
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, {tweets: [tweet]});
 		$('#timelineTwitter').prepend(rendered);
+		addTrend(tweet);
+		sortTrends();
 	});
 }
 

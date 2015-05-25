@@ -93,6 +93,8 @@
 							</div>
 						</div>
 					</div>
+					<div id="twitterTrends">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -136,6 +138,16 @@
 				</div>
 			</div>
 		{{/tweets}}
+	</script>
+	<script id="trendsBlock" type="x-tmpl-mustache">
+		<ul class="list-group">
+		{{#.}}
+  			<li class="list-group-item">
+    			<span class="badge">{{count}}</span>
+				{{trend}}
+  			</li>
+		{{/.}}
+		</ul>
 	</script>
 	<script id="facebookBlock" type="x-tmpl-mustache">
 		{{#.}}

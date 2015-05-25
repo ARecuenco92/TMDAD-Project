@@ -99,6 +99,8 @@
 							</div>
 						</div>
 					</div>
+					<div id="twitterTrends">
+					</div>
 				</div>
 				<div class="col-sm-12 col-md-12">
 					<canvas id="evolutionChart" style="width: 100%; height: 400px"></canvas>
@@ -150,6 +152,16 @@
 				</div>
 			</div>
 		{{/tweets}}
+	</script>
+	<script id="trendsBlock" type="x-tmpl-mustache">
+		<ul class="list-group">
+		{{#.}}
+  			<li class="list-group-item">
+    			<span class="badge">{{count}}</span>
+				{{trend}}
+  			</li>
+		{{/.}}
+		</ul>
 	</script>
 	<script id="facebookBlock" type="x-tmpl-mustache">
 		{{#.}}
