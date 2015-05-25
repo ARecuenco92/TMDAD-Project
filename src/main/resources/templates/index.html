@@ -64,7 +64,7 @@
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="col-sm-12 col-md-6">
-					<h2 class="text-center">Tweets políticos <small>geolocalziados</small></h2>
+					<h2 class="text-center" style="margin-top: 10px;">Tweets políticos <small>geolocalizados</small></h2>
 					<div id="spain-map" class="spain-map"></div>
 					<div id="geoTweet"></div>
 				</div>
@@ -159,7 +159,7 @@
 		{{#.}}
   			<li class="list-group-item">
     			<span class="badge">{{count}}</span>
-				{{trend}}
+				<a target="_blank" href="https://twitter.com/hashtag/{{trend}}">#{{trend}}</a>
   			</li>
 		{{/.}}
 		</ul>
@@ -186,6 +186,8 @@
 				<a target="_blank" href="https://twitter.com/{{screenName}}"> 
 					<b>@{{screenName}}</b>
 				</a>
+				<b style="float:right; margin-top:5px; margin-right:10px; color: #FFC600">Fav: <b style="color:#757575">{{likesCount}}</b></b>
+				<b style="float:right; margin-top:5px; margin-right:10px; color: #8EDD65">Ret: <b style="color:#757575">{{sharedCount}}</b></b>
 			</div>
 			<div class="panel-body">
 				{{{text}}}

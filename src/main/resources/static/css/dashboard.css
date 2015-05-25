@@ -175,8 +175,8 @@ body {
 
 @media ( min-width : 768px) {
 	.main {
-		padding-right: 40px;
-		padding-left: 40px;
+		padding-right: 15px;
+		padding-left: 15px;
 	}
 }
 
@@ -185,8 +185,8 @@ body {
 }
 
 .fixed-panel {
-	min-height: 315px;
-	max-height: 315px;
+	min-height: 311px;
+	max-height: 311px;
 	overflow-y: scroll;
 }
 
@@ -282,4 +282,16 @@ body {
 .input-group-addon{
 	min-width: 150px;
 	text-align:left;
+}
+
+#twitterTrends > ul{
+	margin-bottom: 0px !important;
+}
+
+#geoTweet{
+	margin-top: 10px;
+}
+
+#geoTweet > div > .panel-body{
+	min-height: 60px;
 }

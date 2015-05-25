@@ -70,7 +70,7 @@ function sortTrends(){
 	});
 
 	var trends = items.slice(0, 5).map(function(item) {
-		return {trend: "#" + item[0], count : item[1]};
+		return {trend: item[0], count : item[1]};
 	});
 
 	var template = $('#trendsBlock').html();
@@ -204,7 +204,7 @@ function addMarkers(map, data){
 				style: {
 					fill: color,
 					stroke: '#DFDFDF',
-					r: Math.min(data[i].relevance + 5, 8)
+					r: Math.min(data[i].relevance + 4, 8)
 				}
 		}
 	}
