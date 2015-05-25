@@ -1,5 +1,6 @@
 var stomptClient = null;
 var subscription = null;
+var markers = [];
 var dict = {};
 
 $(document).ready(function() {
@@ -60,18 +61,18 @@ function addTrend(tweet){
 function sortTrends(){
 	// Create items array
 	var items = Object.keys(dict).map(function(key) {
-	    return [key, dict[key]];
+		return [key, dict[key]];
 	});
-	
+
 	// Sort the array based on the second element
 	items.sort(function(first, second) {
-	    return second[1] - first[1];
+		return second[1] - first[1];
 	});
-	
+
 	var trends = items.slice(0, 5).map(function(item) {
 		return {trend: "#" + item[0], count : item[1]};
 	});
-	
+
 	var template = $('#trendsBlock').html();
 	Mustache.parse(template); 
 	var rendered = Mustache.render(template, trends);
@@ -133,10 +134,26 @@ function setMap(){
 		zoomButtons : false,
 		container : $('#spain-map'),
 		zoomMax : 6,
+		markersSelectable: true,
+		markersSelectableOne: true,
+		markerStyle: {
+			selected: {
+				fill: '#75787B'
+			}
+		},
 		series : {
 			regions : [ {
 				attribute : 'fill'
 			} ]
+		},
+		onMarkerSelected: function(event, index, state){
+			if(state){
+				var tweet = markers[index].tweet;
+				var template = $('#geoTweetBlock').html();
+				Mustache.parse(template); 
+				var rendered = Mustache.render(template, tweet);
+				$('#geoTweet').html(rendered);
+			}
 		}
 	});
 	map.series.regions[0].setValues(generateColors());
@@ -152,7 +169,7 @@ function setMap(){
 
 function addMarkers(map, data){
 	var max = data.length;
-	var markers = [], latLng;
+	var latLng;
 	var mentions = [];
 	var parties;
 	for(var i = 0; i< max; i++){
@@ -183,6 +200,7 @@ function addMarkers(map, data){
 		markers[i] = {
 				latLng : latLng,
 				name : "@" + data[i].screenName,
+				tweet: data[i],
 				style: {
 					fill: color,
 					stroke: '#DFDFDF',

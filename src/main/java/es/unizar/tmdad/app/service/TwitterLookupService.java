@@ -197,8 +197,9 @@ public class TwitterLookupService {
 					for(int i = 0; i < mentions.length; i++){
 						post.addMention(mentions[i].getScreenName());
 					}
-					
-					post.setRelevance((status.getRetweetCount()*2+status.getFavoriteCount())/3 + 1);
+					post.setImg(status.getUser().getMiniProfileImageURL());
+					post.setSharedCount(status.getRetweetCount());
+					post.setLikesCount(status.getFavoriteCount());
 					
 					return post;
 				})

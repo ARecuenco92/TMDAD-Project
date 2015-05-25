@@ -63,9 +63,10 @@
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<div class="col-sm-12 col-md-6 text-center">
-					<h2>Tweets políticos <small>geolocalziados</small></h2>
+				<div class="col-sm-12 col-md-6">
+					<h2 class="text-center">Tweets políticos <small>geolocalziados</small></h2>
 					<div id="spain-map" class="spain-map"></div>
+					<div id="geoTweet"></div>
 				</div>
 				<div class="col-sm-12 col-md-6">
 					<div class="panel panel-primary">
@@ -100,7 +101,7 @@
 				</div>
 			</div>
 			<div
-				class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main panel-political-parties">
+				class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main panel-political-parties" style="display:none">
 				<div id="resumeParties"></div>
 				<div class="col-sm-12 col-md-12">
 					<canvas id="evolutionChart" style="width: 100%; height: 400px"></canvas>
@@ -176,6 +177,20 @@
 				</div>
 			</div>
 		{{/.}}
+	</script>
+	<script id="geoTweetBlock" type="x-tmpl-mustache">
+		<div class="panel panel-default panel-tweet">
+			<div class="panel-heading">
+				<img class="img-rounded img-panel-heading"
+					src="{{img}}" />
+				<a target="_blank" href="https://twitter.com/{{screenName}}"> 
+					<b>@{{screenName}}</b>
+				</a>
+			</div>
+			<div class="panel-body">
+				{{{text}}}
+			</div>
+		</div>
 	</script>
 	<script id="resumeBlock" type="x-tmpl-mustache">
 		{{#.}}
