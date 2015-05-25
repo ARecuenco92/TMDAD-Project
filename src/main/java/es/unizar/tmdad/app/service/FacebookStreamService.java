@@ -25,28 +25,39 @@ public class FacebookStreamService extends FacebookService{
 	@Autowired
 	private SimpMessageSendingOperations ops;
 	
-	public void sendPost() {
-		sendPost("podemos");
+	public FacebookStreamService(){
+		podemosLastPost = new Date();
+		ppLastPost = new Date();
+		psoeLastPost = new Date();
+		ciudadanosLastPost = new Date();
 	}
 	
-	private void sendPost(String party){
-		podemosLastPost = podemosLastPost != null? podemosLastPost : lastPost; 
+	public void sendPost() {
+		podemosLastPost = sendPost("podemos", podemosFacebook, podemosLastPost);
+		ppLastPost = sendPost("pp", ppFacebook, ppLastPost);
+		psoeLastPost = sendPost("psoe", psoeFacebook, psoeLastPost);
+		ciudadanosLastPost = sendPost("ciudadanos", ciudadanosFacebook, ciudadanosLastPost);
+	}
+	
+	private Date sendPost(String party, String facebook, Date lastDate){
 		List<Post> posts = facebookTemplate.feedOperations()
-				.getFeed(podemosFacebook)
+				.getFeed(facebook)
 				.stream()
 				.filter(post ->{
-					return post.getCreatedTime()!= null && podemosLastPost!= null && post.getCreatedTime().after(podemosLastPost);
+					return post.getCreatedTime()!= null && post.getCreatedTime().after(lastDate);
 				})
 				.collect(Collectors.toList());
 		Map<String, Object> map = new HashMap<>();
 		map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
 		Collections.sort(posts, (Post p1, Post p2) -> p2.getCreatedTime().compareTo(p1.getCreatedTime()));
 		
+		posts.stream().forEach(post -> ops.convertAndSend("/queue/facebook/"+party, post, map));
+		
 		if(posts.size()>0){
-			podemosLastPost = posts.get(0).getCreatedTime();
+			return posts.get(0).getCreatedTime();
 		}
 		
-		posts.stream().forEach(post -> ops.convertAndSend("/queue/facebook/"+party, post, map));
+		return lastDate;
 	}
 
 }

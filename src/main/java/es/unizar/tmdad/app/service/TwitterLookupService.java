@@ -5,44 +5,21 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.social.twitter.api.SearchParameters;
 import org.springframework.social.twitter.api.SearchResults;
 import org.springframework.social.twitter.api.Tweet;
-import org.springframework.social.twitter.api.impl.TwitterTemplate;
 import org.springframework.stereotype.Service;
 
 import twitter4j.GeoLocation;
 import twitter4j.Query;
 import twitter4j.Status;
-import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.UserMentionEntity;
 import es.unizar.tmdad.domain.Filter;
 import es.unizar.tmdad.domain.GeoMessage;
 
 @Service
-public class TwitterLookupService {
-	private static final int MAX_COUNT = 100;
-
-	@Value("${twitter.ciudadanos}")
-	private String ciudadanosTwitter;
-
-	@Value("${twitter.podemos}")
-	private String podemosTwitter;
-
-	@Value("${twitter.pp}")
-	private String ppTwitter;
-
-	@Value("${twitter.psoe}")
-	private String psoeTwitter;
-	
-	@Autowired
-	private TwitterTemplate twitterTemplate;
-
-	@Autowired
-	private Twitter twitter;
+public class TwitterLookupService extends TwitterService{
 	
 	public SearchResults search() {
 		String query = ciudadanosTwitter+" OR "+podemosTwitter+" OR "+ppTwitter+" OR "+psoeTwitter;
@@ -176,12 +153,7 @@ public class TwitterLookupService {
 		List<Status> tweets2 = twitter.search(searchQuery).getTweets();
 		searchQuery.setMaxId(tweets2.get(MAX_COUNT-1).getId());
 		
-		List<Status> tweets3 = twitter.search(searchQuery).getTweets();
-		searchQuery.setMaxId(tweets3.get(MAX_COUNT-1).getId());
-		
-		tweets2.addAll(twitter.search(searchQuery).getTweets());
 		tweets.addAll(tweets2);
-		tweets.addAll(tweets3);
 		
 		return tweets.stream()
 			.filter(status -> status.getGeoLocation() != null)

@@ -1,7 +1,5 @@
 package es.unizar.tmdad.app.service;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
@@ -28,6 +26,4 @@ public abstract class FacebookService {
 	
 	@Autowired
 	protected Facebook facebook;
-	
-	protected static Date lastPost;
 }

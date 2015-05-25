@@ -27,8 +27,7 @@ public class FacebookLookupService extends FacebookService{
 		Collections.sort(list, (Post p1, Post p2) -> p2.getCreatedTime().compareTo(p1.getCreatedTime()));
 
 		List<Post> posts = list.subList(0, MAXIMUM_POSTS);
-		
-		lastPost = posts.get(0).getCreatedTime();
+
 		return posts;
 	}
 	
