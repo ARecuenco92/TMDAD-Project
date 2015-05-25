@@ -82,7 +82,6 @@ function resumeParties(){
 	$.ajax({
 		url: 'resumeParties',
 		method: 'GET',
-		async:false,
 		success: function(data) {
 			var template = $('#resumeBlock').html();
 			Mustache.parse(template); 
