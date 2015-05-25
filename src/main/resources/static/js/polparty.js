@@ -36,6 +36,7 @@ function clear(){
 	$('#timelineTwitter').html('<div class="text-center panel-knob"><input class="knob" data-max="50" data-displayInput="false"/></div>');
 	$('#timelineFacebook').html('<div class="text-center panel-knob"><input class="knob" data-max="50" data-displayInput="false"/></div>');
 	$('#twitterTrends').html("");
+	dict = {};
 }
 
 function setupTimeline() {	
@@ -95,7 +96,7 @@ function sortTrends(){
 	});
 	
 	var trends = items.slice(0, 5).map(function(item) {
-		return {trend: "#" + item[0], count : item[1]};
+		return {trend: item[0], count : item[1]};
 	});
 	
 	var template = $('#trendsBlock').html();
