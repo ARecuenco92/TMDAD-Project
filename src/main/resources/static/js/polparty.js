@@ -1,5 +1,6 @@
 var stomptClient = null;
-var subscription = null;
+var twitterSubscription = null
+var facebookSubscription = null;
 var dict = {};
 var politicalParty;
 
@@ -8,6 +9,7 @@ $(document).ready(function() {
 		politicalParty = window.location.hash.substring(1);
 		displayPoliticalParty();
 	}
+	connect();
 	$(".party").click(changePoliticalParty);
 });
 
@@ -21,6 +23,8 @@ function changePoliticalParty(event){
 		$("[id='"+politicalParty+"']").parent().removeClass('active');
 		politicalParty = nextParty;
 		document.location.hash = politicalParty;
+		twitterSubscribe(politicalParty);
+		facebookSubscribe(politicalParty);
 		displayPoliticalParty();
 	}
 }
@@ -30,7 +34,6 @@ function displayPoliticalParty(){
 	clear();
 	setupDial();
 	setupTimeline();
-	connect();
 }
 
 function clear(){
@@ -142,11 +145,11 @@ function connect() {
 }
 
 function twitterSubscribe(party) {
-	if (subscription) {
-		subscription.unsubscribe();
+	if (twitterSubscription) {
+		twitterSubscription.unsubscribe();
 	}
 	stompClient.send("/app/twitter/"+party);
-	subscription = stompClient.subscribe("/queue/twitter/"+party, function(data) {
+	twitterSubscription = stompClient.subscribe("/queue/twitter/"+party, function(data) {
 		var tweet = JSON.parse(data.body);
 		var template = $('#twitterBlock').html();
 		Mustache.parse(template); 
@@ -158,8 +161,11 @@ function twitterSubscribe(party) {
 }
 
 function facebookSubscribe(party){
+	if (facebookSubscription) {
+		facebookSubscription.unsubscribe();
+	}
 	stompClient.send("/app/facebook/"+party);
-	subscription = stompClient.subscribe("/queue/facebook/"+party, function(data) {
+	facebookSubscription = stompClient.subscribe("/queue/facebook/"+party, function(data) {
 		var post = JSON.parse(data.body);
 		var template = $('#facebookBlock').html();
 		Mustache.parse(template); 

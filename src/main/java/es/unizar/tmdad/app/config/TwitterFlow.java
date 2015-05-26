@@ -65,7 +65,7 @@ public class TwitterFlow {
 	private Function<PoliticalTweet, ?> splitPoliticalTweets(){
 		return polTweet ->{  
 			List<PoliticalTweet> list = new ArrayList<PoliticalTweet>();
-			String text = polTweet.getTweet().getText();
+			String text = polTweet.getTweet().getText().toLowerCase();
 
 			PoliticalTweet tweet;
 			if(text.contains(podemosTwitter)){
