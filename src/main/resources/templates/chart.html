@@ -40,8 +40,8 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="/">Home</a></li>
-					<li><a href="chart">Estadísticas</a></li>
-					<li class="active"><a href="#">Buscar</a></li>
+					<li class="active"><a href="#">Estadísticas</a></li>
+					<li><a href="search">Buscar</a></li>
 					<li><a href="polparty#podemos">Podemos</a></li>
 					<li><a href="polparty#pp">Partido Popular</a></li>
 					<li><a href="polparty#psoe">Partido Socialista</a></li>
@@ -56,60 +56,23 @@
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
 					<li><a href="/">Home</a></li>
-					<li><a href="chart">Estadísticas</a></li>
-					<li class="active"><a href="#">Buscar</a></li>
+					<li class="active"><a href="#">Estadísticas</a></li>
+					<li><a href="search">Buscar</a></li>
 					<li><a href="polparty#podemos">Podemos</a></li>
 					<li><a href="polparty#pp">Partido Popular</a></li>
 					<li><a href="polparty#psoe">Partido Socialista</a></li>
 					<li><a href="polparty#ciudadanos">Ciudadanos</a></li>
 				</ul>
 			</div>
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h3 class="text-center">Buscar últimos tweets</h3>
-			</div>
-			<div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-3 main">
-				<form id="search-form">
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-addon">Partidos (Opcional)</div>
-							<select multiple="true" class="form-control" name="political-party">
-								<option value="ahorapodemos">Podemos</option>
-								<option value="pp">Partido Popular</option>
-								<option value="psoe">Partido Socialista</option>
-								<option value="ciudadanoscs">Ciudadanos</option>
-							</select>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-addon">Usuario (Opcional)</div>
-							<input type="text" name="user" class="form-control" />
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-addon">Palabras clave</div>
-							<input type="text" id="key-words" name="key-words" class="form-control" />
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-addon">Ordenar tweets</div>
-							<select name="sort-by" class="form-control">
-								<option value="date">Por fecha</option>
-								<option value="retweets">Por retweets</option>
-								<option value="favorites">Por favoritos</option>
-							</select>
-						</div>
-					</div>
-					<div
-						class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4 main">
-						<button id="search-btn" class="btn btn-primary btn-lg" style="width:100%">Buscar</button>
-					</div>
-				</form>
-			</div>
-			<div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-3 main">
-				<div id="results"></div>
+			<div
+				class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<div id="resumeParties"></div>
+				<div class="col-sm-12 col-md-12">
+					<canvas id="evolutionChart" style="width: 100%; height: 400px"></canvas>
+				</div>
+				<div class="col-sm-12 col-md-12">
+					<canvas id="evolutionChart2" style="width: 100%; height: 400px"></canvas>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -123,24 +86,25 @@
 	<script
 		src="https://maxcdn.bootstrapcdn.com/mustachejs/0.8.2/mustache.js"
 		th:src="@{/webjars/mustachejs/0.8.2/mustache.js}"></script>
-	<script th:src="@{/js/search.js}" src="../static/js/search.js"></script>
-	
-	<script id="twitterMsn" type="x-tmpl-mustache">
+	<script th:src="@{/webjars/chartjs/1.0.2/Chart.min.js}"
+		src="../static/js/chartjs/1.0.2/Chart.min.js"></script>
+	<script th:src="@{/js/chart.js}" src="../static/js/chart.js"></script>
+	<script id="resumeBlock" type="x-tmpl-mustache">
 		{{#.}}
-			<div class="panel panel-default panel-tweet">
+		<div class="col-sm-6 col-md-3">
+			<div class="panel panel-{{color}}">
 				<div class="panel-heading">
-					<img class="img-rounded img-panel-heading"
-						src="{{profileImageUrl}}" />
-					<a target="_blank" href="https://twitter.com/{{fromUser}}"> 
-						<b>@{{fromUser}}</b>
-					</a>
-					<b style="float:right; margin-top:5px; margin-right:10px; color: #FFC600">Fav: <b style="color:#757575">{{favoriteCount}}</b></b>
-					<b style="float:right; margin-top:5px; margin-right:10px; color: #8EDD65">Ret: <b style="color:#757575">{{retweetCount}}</b></b>
+					<img
+						src="{{logo}}"
+						style="width: 32px; height: 32px;" />
+					<b style="margin-left:10px">{{name}}</b>
 				</div>
-				<div class="panel-body">
-					{{{unmodifiedText}}}
+				<div class="panel-footer">
+					<h3 class="panel-title">
+						<a href="{{webpage}}">Visitar página Web</a></h3>
 				</div>
 			</div>
+		</div>
 		{{/.}}
 	</script>
 </body>

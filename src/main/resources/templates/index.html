@@ -40,6 +40,7 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li class="active"><a href="#">Home</a></li>
+					<li><a href="chart">Estadísticas</a></li>
 					<li><a href="search">Buscar</a></li>
 					<li><a href="polparty#podemos">Podemos</a></li>
 					<li><a href="polparty#pp">Partido Popular</a></li>
@@ -55,6 +56,7 @@
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
 					<li class="active"><a href="#">Home</a></li>
+					<li><a href="chart">Estadísticas</a></li>
 					<li><a href="search">Buscar</a></li>
 					<li><a href="polparty#podemos">Podemos</a></li>
 					<li><a href="polparty#pp">Partido Popular</a></li>
@@ -63,12 +65,12 @@
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<div class="col-sm-12 col-md-6">
+				<div class="col-sm-12 col-md-7">
 					<h2 class="text-center" style="margin-top: 10px;">Tweets políticos <small>geolocalizados</small></h2>
 					<div id="spain-map" class="spain-map"></div>
 					<div id="geoTweet"></div>
 				</div>
-				<div class="col-sm-12 col-md-6">
+				<div class="col-sm-12 col-md-5">
 					<div class="panel panel-primary">
 						<div class="panel-heading panel-timeline">
 							<div class="panel-title">
@@ -98,16 +100,6 @@
 						</div>
 					</div>
 					<div id="twitterTrends"></div>
-				</div>
-			</div>
-			<div
-				class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main panel-political-parties" style="display:none">
-				<div id="resumeParties"></div>
-				<div class="col-sm-12 col-md-12">
-					<canvas id="evolutionChart" style="width: 100%; height: 400px"></canvas>
-				</div>
-				<div class="col-sm-12 col-md-12">
-					<canvas id="evolutionChart2" style="width: 100%; height: 400px"></canvas>
 				</div>
 			</div>
 		</div>
@@ -193,24 +185,6 @@
 				{{{text}}}
 			</div>
 		</div>
-	</script>
-	<script id="resumeBlock" type="x-tmpl-mustache">
-		{{#.}}
-		<div class="col-sm-3 col-md-3">
-			<div class="panel panel-{{color}}">
-				<div class="panel-heading">
-					<img
-						src="{{logo}}"
-						style="width: 32px; height: 32px;" />
-					<b style="margin-left:10px">{{name}}</b>
-				</div>
-				<div class="panel-footer">
-					<h3 class="panel-title">
-						<a href="{{webpage}}">Visitar página Web</a></h3>
-				</div>
-			</div>
-		</div>
-		{{/.}}
 	</script>
 </body>
 </html>

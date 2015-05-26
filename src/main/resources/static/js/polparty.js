@@ -28,8 +28,9 @@ function changePoliticalParty(event){
 function displayPoliticalParty(){
 	$("[id='"+politicalParty+"']").parent().addClass('active');
 	clear();
-	setupTimeline();
 	setupDial();
+	setupTimeline();
+	connect();
 }
 
 function clear(){
@@ -45,7 +46,6 @@ function setupTimeline() {
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, data);
 		$('#timelineTwitter').html(rendered);
-		connect();
 		getTrends(data.tweets);
 	});	
 

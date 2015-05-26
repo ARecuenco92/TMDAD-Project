@@ -36,6 +36,12 @@ public class RestController {
 	public String index() {
 		return "index";
 	}
+	
+	@RequestMapping(value = "/chart", method=RequestMethod.GET)
+	public String chart() {
+		return "chart";
+	}
+	
 
 	@RequestMapping(value = "/search", method=RequestMethod.GET)
 	public String search() {
