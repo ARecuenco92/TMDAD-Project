@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import twitter4j.TwitterException;
@@ -117,14 +116,10 @@ public class RestController {
 		return service.getAdherentsEvolution();
 	}
 	
-	@RequestMapping(value = "/polparty/fullParty/{party}", method = RequestMethod.POST)
+	@RequestMapping(value = "/polparty/fullParty/{party}",  method=RequestMethod.GET)
 	@ResponseBody
-	public FullPoliticalParty getFullParty(@PathVariable(value="party") String party,
-			@RequestParam(value="location[city]") String city,
-			@RequestParam(value="location[country]") String country,
-			@RequestParam(value="location[street]") String street,
-			@RequestParam(value="location[zip]") String zip){
-		return facebook.getFullPoliticalParty(party, city, country, street,zip); 
+	public FullPoliticalParty getFullParty(@PathVariable(value="party") String party){
+		return facebook.getFullPoliticalParty(party); 
 				
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.social.facebook.api.FacebookProfile;
+import org.springframework.social.facebook.api.Page;
 import org.springframework.social.facebook.api.PagedList;
 import org.springframework.social.facebook.api.Post;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class FacebookLookupService extends FacebookService{
 
 		return posts;
 	}
-	
+
 	public List<Post> search(String party) {
 		PagedList<Post> list = null;
 		switch(party.toLowerCase()){
@@ -99,20 +100,20 @@ public class FacebookLookupService extends FacebookService{
 					post.setText(page.getMessage());
 					post.setLatitude(loc.getLatitude());
 					post.setLongitude(loc.getLongitude());
-					
+
 					return post;
 				})
 				.collect(Collectors.toList());
 	}
-	
-	public FullPoliticalParty getFullPoliticalParty(String nameParty, String city, String country
-			,String street,String zip){
+
+	public FullPoliticalParty getFullPoliticalParty(String nameParty){
 		FullPoliticalParty party;
 		String id, color;
-		
+		LocationMapa location = null;
 		if(nameParty.equals("podemos")){
 			id = podemosFacebook;
 			color = "purple";
+			location = new LocationMapa("Spain","Madrid","Calle Zurita, 21","28005");
 		}
 		else if(nameParty.equals("pp")){
 			id = ppFacebook;
@@ -126,14 +127,18 @@ public class FacebookLookupService extends FacebookService{
 			id = psoeFacebook;
 			color = "red";
 		}
-		FacebookProfile profile = facebookTemplate.userOperations().getUserProfile(id);
+		Page profile = facebookTemplate.pageOperations().getPage(id);
 		String name = profile.getName();
 		String webside = profile.getWebsite();
 		String logo = "http://graph.facebook.com/"+id+"/picture";
 		party = new FullPoliticalParty(name, color, logo, webside);
-		String email = profile.getEmail();
-		party.setEmail(email);
-		LocationMapa location = new LocationMapa(city,country,street,zip); 
+		
+		String phone = profile.getPhone() == null? "No disponible" :  profile.getPhone();
+		party.setPhone(phone);
+		org.springframework.social.facebook.api.Location loc = profile.getLocation();
+		if(loc != null){
+			location = new LocationMapa(loc.getCity(),loc.getCountry(),loc.getStreet(),loc.getZip());
+		}
 		party.setLocation(location);
 		return party;
 	}
