@@ -299,25 +299,25 @@ function setChartParty(){
 
 function getDoughnut(segPodemos,segPp,segPsoe,segCiudadanos){
 	var podemos = {
-			color:"rgba(106,32,95,0.2)",
-	        highlight: "#FF5A5E",
+			color:"rgba(106,32,95, 0.7)",
+	        highlight: "rgba(106,32,95, 1)",
 	        label: "Podemos"
 	}
 	var pp = {
-			color:"rgba(0,110,198,0.2)",
-	        highlight: "#FF5A5E",
+			color:"rgba(0,110,198,0.7)",
+	        highlight: "rgba(0,110,198, 1)",
 	        label: "PP"
 	}
 	
 	var psoe = {
-			color:"rgba(210,8,4,0.2)",
-	        highlight: "#FF5A5E",
+			color:"rgba(210,8,4,0.7)",
+	        highlight: "rgba(210,8,4, 1)",
 	        label: "PSOE"	
 	}
 	
 	var ciudadanos = {
-			color:"rgba(243,135,37,0.2)",
-	        highlight: "#FF5A5E",
+			color:"rgba(243,135,37,0.7)",
+	        highlight: "rgba(243,135,37, 1)",
 	        label: "Ciudadanos"	
 	}
 	
@@ -333,7 +333,7 @@ function getDoughnut(segPodemos,segPp,segPsoe,segCiudadanos){
 		var data = [podemos,pp,psoe,ciudadanos];
 		
 		var ctx = $("#apollosChart").get(0).getContext("2d");
-		var myDoughnutChart = new Chart(ctx[1]).Doughnut(data,{
+		var myDoughnutChart = new Chart(ctx).Doughnut(data,{
 		    animateScale: true
 		});
 	});
