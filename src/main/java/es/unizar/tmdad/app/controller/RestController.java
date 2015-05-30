@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import twitter4j.TwitterException;
@@ -18,6 +19,7 @@ import es.unizar.tmdad.app.service.ChartService;
 import es.unizar.tmdad.app.service.FacebookLookupService;
 import es.unizar.tmdad.app.service.TwitterLookupService;
 import es.unizar.tmdad.domain.Filter;
+import es.unizar.tmdad.domain.FullPoliticalParty;
 import es.unizar.tmdad.domain.GeoMessage;
 import es.unizar.tmdad.domain.PoliticalParty;
 import es.unizar.tmdad.domain.chart.Chart;
@@ -113,5 +115,16 @@ public class RestController {
 	public Chart absoluteEvolutonChart(){
 		ChartService service = new ChartService();
 		return service.getAdherentsEvolution();
+	}
+	
+	@RequestMapping(value = "/polparty/fullParty/{party}", method = RequestMethod.POST)
+	@ResponseBody
+	public FullPoliticalParty getFullParty(@PathVariable(value="party") String party,
+			@RequestParam(value="location[city]") String city,
+			@RequestParam(value="location[country]") String country,
+			@RequestParam(value="location[street]") String street,
+			@RequestParam(value="location[zip]") String zip){
+		return facebook.getFullPoliticalParty(party, city, country, street,zip); 
+				
 	}
 }

@@ -25,4 +25,12 @@ public class ChartData {
 	public List<Float> getDataSet(){
 		return this.dataSet;
 	}
+	
+	public void setLabels(List<String> labels){
+		this.labels = labels;
+	}
+	
+	public void setData(List<Float> data){
+		this.dataSet = data;
+	}
 }

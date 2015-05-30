@@ -66,25 +66,13 @@
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="col-sm-12 col-md-7">
-					<div class="thumbnail">
-						<div class="media caption">
-							<div class="media-left media-middle">
-								<img class="media-object"
-									src="http://graph.facebook.com/psoe/picture" />
-							</div>
-							<div class="media-body">
-								<h3 class="media-heading">PSOE</h3>
-								<span>Subtitulo</span>
-							</div>
-						</div>
-						<div class="caption">
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								In eget enim blandit, sagittis lorem et, maximus ante. Vivamus a
-								lectus mauris. In tristique bibendum congue. Sed commodo, urna
-								quis pellentesque varius, nibh orci dignissim mauris, eu
-								vulputate est dolor ac orci.</p>
-						</div>
-					</div>
+					<div id="partyInfo"></div>
+				</div>
+				<div class="col-sm-12 col-md-7">
+					<canvas id="evolutionChart" style="width: 100%; height: 400px"></canvas>
+				</div>
+				<div class="col-sm-12 col-md-7">
+					<canvas id="apollosChart" style="width: 100%; height: 400px"></canvas>
 				</div>
 				<div class="col-sm-12 col-md-5">
 					<div class="panel panel-primary">
@@ -139,6 +127,8 @@
 		src="http://cdn.jsdelivr.net/webjars/stomp-websocket/2.3.1-1/stomp.js"
 		th:src="@{/webjars/stomp-websocket/2.3.1-1/stomp.js}"></script>
 	<script th:src="@{/js/polparty.js}" src="../static/js/polparty.js"></script>
+	<script th:src="@{/webjars/chartjs/1.0.2/Chart.min.js}"
+		src="../static/js/chartjs/1.0.2/Chart.min.js"></script>
 	<script id="twitterBlock" type="x-tmpl-mustache">
 		{{#tweets}}
 			<div class="panel panel-default panel-tweet">
@@ -178,6 +168,27 @@
 				</div>
 			</div>
 		{{/.}}
+	</script>
+	
+	<script id="partyInfoBlock" type="x-tmpl-mustache">
+		<div class="thumbnail">
+			<div class="media caption">
+				<div class="media-left media-middle">
+					<img class="media-object"
+						src="{{logo}}" />
+				</div>
+				<div class="media-body">
+					<h3 class="media-heading">{{name}}</h3>
+					<span>{{location.street}}<br/>{{location.city}},{{location.country}}</span>
+				</div>
+			</div>
+			<div class="caption">
+				<div class="panel panel-web-{{color}}">
+					<h3 class="panel-title">
+						<a href="{{webpage}}">{{webpage}}</a></h3>
+				</div>
+			</div>
+		</div>
 	</script>
 </body>
 </html>

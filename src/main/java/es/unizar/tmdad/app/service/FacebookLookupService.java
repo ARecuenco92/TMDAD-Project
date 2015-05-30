@@ -10,7 +10,9 @@ import org.springframework.social.facebook.api.PagedList;
 import org.springframework.social.facebook.api.Post;
 import org.springframework.stereotype.Service;
 
+import es.unizar.tmdad.domain.FullPoliticalParty;
 import es.unizar.tmdad.domain.GeoMessage;
+import es.unizar.tmdad.domain.LocationMapa;
 import es.unizar.tmdad.domain.PoliticalParty;
 import facebook4j.FacebookException;
 import facebook4j.Place.Location;
@@ -101,6 +103,39 @@ public class FacebookLookupService extends FacebookService{
 					return post;
 				})
 				.collect(Collectors.toList());
+	}
+	
+	public FullPoliticalParty getFullPoliticalParty(String nameParty, String city, String country
+			,String street,String zip){
+		FullPoliticalParty party;
+		String id, color;
+		
+		if(nameParty.equals("podemos")){
+			id = podemosFacebook;
+			color = "purple";
+		}
+		else if(nameParty.equals("pp")){
+			id = ppFacebook;
+			color = "blue";
+		}
+		else if(nameParty.equals("ciudadanos")){
+			id = ciudadanosFacebook;
+			color = "orange";
+		}
+		else{
+			id = psoeFacebook;
+			color = "red";
+		}
+		FacebookProfile profile = facebookTemplate.userOperations().getUserProfile(id);
+		String name = profile.getName();
+		String webside = profile.getWebsite();
+		String logo = "http://graph.facebook.com/"+id+"/picture";
+		party = new FullPoliticalParty(name, color, logo, webside);
+		String email = profile.getEmail();
+		party.setEmail(email);
+		LocationMapa location = new LocationMapa(city,country,street,zip); 
+		party.setLocation(location);
+		return party;
 	}
 
 }

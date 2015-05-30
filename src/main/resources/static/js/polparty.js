@@ -33,6 +33,9 @@ function displayPoliticalParty(){
 	$("[id='"+politicalParty+"']").parent().addClass('active');
 	clear();
 	setupDial();
+	fullParty();
+	getDoughnut();
+	setChartParty();
 	setupTimeline();
 }
 
@@ -173,3 +176,166 @@ function facebookSubscribe(party){
 		$('#timelineFacebook').prepend(rendered);
 	});
 }
+
+function fullParty(){
+	var p;
+	if(politicalParty == "pp"){
+		p = "pp";
+	}
+	else if(politicalParty == "psoe"){
+		p = "psoe";
+	}
+	else if(politicalParty == "podemos"){
+		p = "269212336568846";
+	}
+	else{
+		p = "Cs.Ciudadanos";
+	}
+	$.get("http://graph.facebook.com/"+p+"?fields=location",function(info){
+		$.ajax({
+			data:info,
+			dataType: 'json',
+			url: '/polparty/fullParty/'+politicalParty,
+			method: 'POST',
+			async:false,
+			success: function(data) {
+				var template = $('#partyInfoBlock').html();
+				Mustache.parse(template); 
+				var rendered = Mustache.render(template, data);
+				$('#partyInfo').html(rendered);
+			},
+			error: function(data) {
+	            var data = {"name": "Podemos",
+	            			"color": "purple",
+	            			"logo": "http://graph.facebook.com/269212336568846/picture",
+	            			"webpage": "http://www.podemos.info/",
+	            			"email": "null",
+	            			"location":{"country": "Spain",
+	            						"city": "Madrid",
+	            						"street": "Calle Zurita, 21",
+	            						"zip": "28005"}}
+	            var template = $('#partyInfoBlock').html();
+				Mustache.parse(template); 
+				var rendered = Mustache.render(template, data);
+				$('#partyInfo').html(rendered);
+	        }
+		});	
+	});
+}
+
+function setChartParty(){
+	var podemos = {
+			label: "Podemos",
+			fillColor: "rgba(106,32,95,0.2)",
+			strokeColor: "rgba(106,32,95,1)",
+			pointColor: "rgba(106,32,95,1)",
+			pointStrokeColor: "#fff",
+			pointHighlightFill: "#fff",
+			pointHighlightStroke: "rgba(220,220,220,1)"
+	}
+
+	var pp = {
+			label: "Partido Popular",
+			fillColor: "rgba(0,110,198,0.2)",
+			strokeColor: "rgba(0,110,198,1)",
+			pointColor: "rgba(0,110,198,1)",
+			pointStrokeColor: "#fff",
+			pointHighlightFill: "#fff",
+			pointHighlightStroke: "rgba(220,220,220,1)"
+	}
+
+	var ciudadanos = {
+			label: "Ciudadanos",
+			fillColor: "rgba(243,135,37,0.2)",
+			strokeColor: "rgba(243,135,37,1)",
+			pointColor: "rgba(243,135,37,1)",
+			pointStrokeColor: "#fff",
+			pointHighlightFill: "#fff",
+			pointHighlightStroke: "rgba(220,220,220,1)"
+	}
+
+	var psoe = {
+			label: "PSOE",
+			fillColor: "rgba(210,8,4,0.2)",
+			strokeColor: "rgba(210,8,4,1)",
+			pointColor: "rgba(210,8,4,1)",
+			pointStrokeColor: "#fff",
+			pointHighlightFill: "#fff",
+			pointHighlightStroke: "rgba(151,187,205,1)"
+	}
+
+	$.get('/chart/evolution/absolute', function(data) {
+		var partido;
+		var charts = data.data;
+
+		if(politicalParty == "pp"){
+			pp.data = charts[1].dataSet;
+			partido = pp;
+		}
+		else if(politicalParty == "psoe"){
+			psoe.data = charts[2].dataSet;
+			partido = psoe;
+		}
+		else if(politicalParty == "podemos"){
+			podemos.data = charts[0].dataSet;
+			partido = podemos;
+		}
+		else{
+			ciudadanos.data = charts[3].dataSet;
+			partido = ciudadanos;
+		}
+		var chartData = {
+				labels: charts[0].labels,
+				datasets: [partido]
+		};
+		var options = {
+				scaleLabel : "<%= value + ' seguidores' %>",
+				multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= Number(value).toFixed(2) + ' %'%>"
+		};
+		var ctx = $("#evolutionChart").get(0).getContext("2d");
+		var myLineChart = new Chart(ctx).Line(chartData, options);
+	});
+}
+
+function getDoughnut(segPodemos,segPp,segPsoe,segCiudadanos){
+	var podemos = {
+			color:"rgba(106,32,95,0.2)",
+	        highlight: "#FF5A5E",
+	        label: "Podemos"
+	}
+	var pp = {
+			color:"rgba(0,110,198,0.2)",
+	        highlight: "#FF5A5E",
+	        label: "PP"
+	}
+	
+	var psoe = {
+			color:"rgba(210,8,4,0.2)",
+	        highlight: "#FF5A5E",
+	        label: "PSOE"	
+	}
+	
+	var ciudadanos = {
+			color:"rgba(243,135,37,0.2)",
+	        highlight: "#FF5A5E",
+	        label: "Ciudadanos"	
+	}
+	
+	$.get('/chart/evolution/absolute', function(data) {
+		var charts = data.data;
+		
+		var num = charts[0].dataSet.length;
+		podemos.value = charts[0].dataSet[num-1];
+		pp.value = charts[1].dataSet[num-1];
+		psoe.value = charts[2].dataSet[num-1];
+		ciudadanos.value = charts[3].dataSet[num-1];
+	
+		var data = [podemos,pp,psoe,ciudadanos];
+		
+		var ctx = $("#apollosChart").get(0).getContext("2d");
+		var myDoughnutChart = new Chart(ctx[1]).Doughnut(data,{
+		    animateScale: true
+		});
+	});
+}
+
