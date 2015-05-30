@@ -43,6 +43,8 @@ function clear(){
 	$('#timelineTwitter').html('<div class="text-center panel-knob"><input class="knob" data-max="50" data-displayInput="false"/></div>');
 	$('#timelineFacebook').html('<div class="text-center panel-knob"><input class="knob" data-max="50" data-displayInput="false"/></div>');
 	$('#twitterTrends').html("");
+	$("#apollosChart").css("visibility", "hidden");
+	$("#evolutionChart").css("visibility", "hidden");
 	dict = {};
 }
 
@@ -270,6 +272,7 @@ function setChartParty(){
 		};
 		var ctx = $("#evolutionChart").get(0).getContext("2d");
 		var myLineChart = new Chart(ctx).Line(chartData, options);
+		$("#evolutionChart").css("visibility", "visible");
 	});
 }
 
@@ -312,6 +315,7 @@ function getDoughnut(segPodemos,segPp,segPsoe,segCiudadanos){
 		var myDoughnutChart = new Chart(ctx).Doughnut(data,{
 			animateScale: true
 		});
+		$("#apollosChart").css("visibility", "visible");
 	});
 }
 
