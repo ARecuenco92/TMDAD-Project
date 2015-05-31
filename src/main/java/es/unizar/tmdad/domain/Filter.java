@@ -8,6 +8,9 @@ public class Filter {
 	String user;
 	String keyWords;
 	String sortBy;
+	int radius;
+	double latitude;
+	double longitude;
 	
 	public List<String> getPoliticalParties() {
 		return politicalParties;
@@ -39,6 +42,30 @@ public class Filter {
 	
 	public void setSortBy(String sortBy) {
 		this.sortBy = sortBy;
+	}
+
+	public int getRadius() {
+		return radius;
+	}
+
+	public void setRadius(int radius) {
+		this.radius = radius;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
 	}
 	
 }

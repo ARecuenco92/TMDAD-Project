@@ -24,6 +24,11 @@ function search(event){
 		filter['user'] = $("[name='user']").val();
 		filter['keyWords'] = $("[name='key-words']").val();
 		filter['sortBy'] = $("[name='sort-by']").val();
+		if(circle){
+			filter['radius'] = latitude: circle.getRadius();
+			filter['latitude'] = latitude: circle.getLatLng().lat;
+			filter['longitude'] = latitude: circle.getLatLng().lng;
+		}
 		$.ajax({
 			url : 'search',
 			data : JSON.stringify(filter),
