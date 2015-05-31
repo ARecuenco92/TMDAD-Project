@@ -50,6 +50,7 @@ dependencies {
     compile("org.webjars:mustachejs:0.8.2")
     compile("org.webjars:jvectormap:2.0.1")
     compile("org.webjars:jquery-knob:1.2.11")
+    compile("org.webjars:leaflet:0.7");
     compile("org.webjars:chartjs:1.0.2");
     compile("org.webjars:stomp-websocket:2.3.1-1")
     compile("org.webjars:sockjs-client:0.3.4-1")

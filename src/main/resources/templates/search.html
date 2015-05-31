@@ -17,9 +17,8 @@
 <link th:href="@{/css/dashboard.css}" href="../static/css/dashboard.css"
 	rel="stylesheet" />
 
-<!-- jVectorMap core CSS -->
-<link th:href="@{/webjars/jvectormap/2.0.1/jquery-jvectormap.css}"
-	rel="stylesheet" />
+<!-- Leaflet core CSS -->
+<link th:href="@{/webjars/leaflet/0.7/leaflet.css}" rel="stylesheet" />
 
 </head>
 
@@ -72,7 +71,8 @@
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-addon">Partidos (Opcional)</div>
-							<select multiple="true" class="form-control" name="political-party">
+							<select multiple="true" class="form-control"
+								name="political-party">
 								<option value="ahorapodemos">Podemos</option>
 								<option value="pp">Partido Popular</option>
 								<option value="psoe">Partido Socialista</option>
@@ -89,7 +89,8 @@
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-addon">Palabras clave</div>
-							<input type="text" id="key-words" name="key-words" class="form-control" />
+							<input type="text" id="key-words" name="key-words"
+								class="form-control" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -102,9 +103,36 @@
 							</select>
 						</div>
 					</div>
-					<div
-						class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4 main">
-						<button id="search-btn" class="btn btn-primary btn-lg" style="width:100%">Buscar</button>
+					<div class="panel-group" id="accordion" role="tablist"
+						aria-multiselectable="true">
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingOne">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#advanceSearch" aria-expanded="true"
+										aria-controls="advanceSearch"> Opciones avanzadas </a>
+								</h4>
+							</div>
+							<div id="advanceSearch" class="panel-collapse collapse in"
+								role="tabpanel" aria-labelledby="headingOne">
+								<div class="panel-body">
+									<div class="input-group">
+										<div class="input-group-addon">Radio de búsqueda (Km)</div>
+										<input type="number" min="50" max="1000" id="radius"
+											name="radius" class="form-control" />
+									</div>
+									<div id="map" style="height: 250px; margin-top: 10px;"></div>
+									<div
+										class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4 main">
+										<button id="remove-geo" class="btn btn-danger" style="width: 100%">Eliminar</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4 main">
+						<button id="search-btn" class="btn btn-primary btn-lg"
+							style="width: 100%">Buscar</button>
 					</div>
 				</form>
 			</div>
@@ -123,8 +151,10 @@
 	<script
 		src="https://maxcdn.bootstrapcdn.com/mustachejs/0.8.2/mustache.js"
 		th:src="@{/webjars/mustachejs/0.8.2/mustache.js}"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/leaflet/0.7/leaflet.js"
+		th:src="@{/	webjars/leaflet/0.7/leaflet.js}"></script>
 	<script th:src="@{/js/search.js}" src="../static/js/search.js"></script>
-	
+
 	<script id="twitterMsn" type="x-tmpl-mustache">
 		{{#.}}
 			<div class="panel panel-default panel-tweet">

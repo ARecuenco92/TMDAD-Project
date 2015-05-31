@@ -1,3 +1,16 @@
+var map;
+var circle;
+
+$(document).ready(function() {
+	$("#advanceSearch").css('visibility', 'hidden');
+	$("#advanceSearch").collapse('hide');
+	setTimeout(function(){$("#advanceSearch").css('visibility', 'visible')}, 1000);
+	$("#search-btn").on("click", search);
+	$("#remove-geo").on("click", removeGeo);
+	setMap();
+});
+
+
 function search(event){
 	event.preventDefault();
 	var criteria = $("#key-words");
@@ -26,6 +39,30 @@ function search(event){
 	}
 }
 
-$(document).ready(function() {
-	$("#search-btn").on("click", search);
-});
+function setMap(){
+	map = L.map('map').setView([39.8, -3.71], 5);
+	var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+	var osm = new L.TileLayer(osmUrl, {minZoom: 5, maxZoom: 5});		
+	map.addLayer(osm);
+	map.on('click', function(e){
+		removeGeo();
+		var km = $("[name='radius']").val() || 100;
+		circle = L.circle(e.latlng, 1000*km, {
+			color: 'red',
+			fillColor: '#f03',
+			fillOpacity: 0.5
+		});
+		circle.addTo(map);
+	});
+	map.dragging.disable();
+}
+
+function removeGeo(event){
+	if(event){
+		event.preventDefault();	
+	}
+	if(circle){
+		// Remove the last circle
+		map.removeLayer(circle);
+	}
+}
