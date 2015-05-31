@@ -25,4 +25,12 @@ public class ChartService {
 	public Chart getNewAdherentsDiary(){
 		return logic.getNewAdherentsDiary();
 	}
+	
+	public Chart getEvolutionParty(String party){
+		return logic.getEvolutionParty(party);
+	}
+	
+	public Chart getComparativeParties(){
+		return logic.getComparativeParties();
+	}
 }

@@ -122,4 +122,18 @@ public class RestController {
 		return facebook.getFullPoliticalParty(party); 
 				
 	}
+	
+	@RequestMapping(value = "/polparty/chart/evolution/{party}", method=RequestMethod.GET)
+	@ResponseBody
+	public Chart abosoluteEvolutonChartParty(@PathVariable(value="party") String party){
+		ChartService service = new ChartService();
+		return service.getEvolutionParty(party);
+	}
+	
+	@RequestMapping(value = "/polparty/chart/doughnut", method=RequestMethod.GET)
+	@ResponseBody
+	public Chart comparativeParties(){
+		ChartService service = new ChartService();
+		return service.getComparativeParties();
+	}
 }

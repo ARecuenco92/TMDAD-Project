@@ -242,16 +242,16 @@ function setChartParty(){
 			pointHighlightStroke: "rgba(151,187,205,1)"
 	}
 
-	$.get('/chart/evolution/absolute', function(data) {
+	$.get('/polparty/chart/evolution/'+politicalParty, function(data) {
 		var partido;
 		var charts = data.data;
 
 		if(politicalParty == "pp"){
-			pp.data = charts[1].dataSet;
+			pp.data = charts[0].dataSet;
 			partido = pp;
 		}
 		else if(politicalParty == "psoe"){
-			psoe.data = charts[2].dataSet;
+			psoe.data = charts[0].dataSet;
 			partido = psoe;
 		}
 		else if(politicalParty == "podemos"){
@@ -259,7 +259,7 @@ function setChartParty(){
 			partido = podemos;
 		}
 		else{
-			ciudadanos.data = charts[3].dataSet;
+			ciudadanos.data = charts[0].dataSet;
 			partido = ciudadanos;
 		}
 		var chartData = {
@@ -300,14 +300,12 @@ function getDoughnut(segPodemos,segPp,segPsoe,segCiudadanos){
 			label: "Ciudadanos"	
 	}
 
-	$.get('/chart/evolution/absolute', function(data) {
+	$.get('/polparty/chart/doughnut', function(data) {
 		var charts = data.data;
-
-		var num = charts[0].dataSet.length;
-		podemos.value = charts[0].dataSet[num-1];
-		pp.value = charts[1].dataSet[num-1];
-		psoe.value = charts[2].dataSet[num-1];
-		ciudadanos.value = charts[3].dataSet[num-1];
+		podemos.value = charts[0].dataSet[0];
+		pp.value = charts[1].dataSet[0];
+		psoe.value = charts[2].dataSet[0];
+		ciudadanos.value = charts[3].dataSet[0];
 
 		var data = [podemos,pp,psoe,ciudadanos];
 
