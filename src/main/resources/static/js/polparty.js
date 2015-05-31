@@ -330,10 +330,7 @@ function localizacionSede(location){
 		
 		var map = L.map('map').setView([lat, lng], 13);
 		var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-		L.tileLayer(osmUrl, {maxZoom: 18,}).addTo(map);
+		L.tileLayer(osmUrl, {minZoom: 8, maxZoom: 18,}).addTo(map);
 		var marker = L.marker([lat, lng]).addTo(map);
-		//var osm = new L.TileLayer(osmUrl, {minZoom: 13, maxZoom: 13});		
-		//map.addLayer(osm);
-		map.dragging.disable();
 	});
 }
