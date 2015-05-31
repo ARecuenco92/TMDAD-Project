@@ -25,9 +25,9 @@ function search(event){
 		filter['keyWords'] = $("[name='key-words']").val();
 		filter['sortBy'] = $("[name='sort-by']").val();
 		if(circle){
-			filter['radius'] = latitude: circle.getRadius();
-			filter['latitude'] = latitude: circle.getLatLng().lat;
-			filter['longitude'] = latitude: circle.getLatLng().lng;
+			filter['radius'] =  circle.getRadius();
+			filter['latitude'] = circle.getLatLng().lat;
+			filter['longitude'] = circle.getLatLng().lng;
 		}
 		$.ajax({
 			url : 'search',
