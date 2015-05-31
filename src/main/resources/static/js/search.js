@@ -25,7 +25,7 @@ function search(event){
 		filter['keyWords'] = $("[name='key-words']").val();
 		filter['sortBy'] = $("[name='sort-by']").val();
 		if(circle){
-			filter['radius'] =  circle.getRadius();
+			filter['radius'] =  circle.getRadius()/1000;
 			filter['latitude'] = circle.getLatLng().lat;
 			filter['longitude'] = circle.getLatLng().lng;
 		}
@@ -78,5 +78,6 @@ function removeGeo(event){
 	if(circle){
 		// Remove the last circle
 		map.removeLayer(circle);
+		circle = undefined;
 	}
 }

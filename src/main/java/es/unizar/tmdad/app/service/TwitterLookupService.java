@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.social.twitter.api.GeoCode;
 import org.springframework.social.twitter.api.SearchParameters;
 import org.springframework.social.twitter.api.SearchResults;
 import org.springframework.social.twitter.api.Tweet;
@@ -20,13 +21,13 @@ import es.unizar.tmdad.domain.GeoMessage;
 
 @Service
 public class TwitterLookupService extends TwitterService{
-	
+
 	public SearchResults search() {
 		String query = ciudadanosTwitter+" OR "+podemosTwitter+" OR "+ppTwitter+" OR "+psoeTwitter;
 		SearchParameters params = new  SearchParameters(query);
 		return twitterTemplate.searchOperations().search(params);
 	}
-	
+
 	public SearchResults search(String party) {
 		SearchParameters params = null;
 		switch(party.toLowerCase()){
@@ -56,6 +57,9 @@ public class TwitterLookupService extends TwitterService{
 		if(filter.getUser().equals("")){
 			String query = getQuery(filter);
 			SearchParameters params = new  SearchParameters(query);
+			if(filter.getLatitude() != 0 && filter.getLongitude() != 0 && filter.getRadius() != 0){
+				params.geoCode(new GeoCode(filter.getLatitude(), filter.getLongitude(), filter.getRadius()));
+			}
 			tweets = twitterTemplate.searchOperations().search(params).getTweets();
 		}
 		else{
@@ -146,25 +150,25 @@ public class TwitterLookupService extends TwitterService{
 		GeoLocation geo = new GeoLocation(40.400, 3.683);
 		searchQuery.setGeoCode(geo, 1000, Query.Unit.km);
 		searchQuery.setCount(MAX_COUNT);
-		
+
 		List<Status> tweets = twitter.search(searchQuery).getTweets();
 		searchQuery.setMaxId(tweets.get(MAX_COUNT-1).getId());
-		
+
 		List<Status> tweets2 = twitter.search(searchQuery).getTweets();
 		searchQuery.setMaxId(tweets2.get(MAX_COUNT-1).getId());
-		
+
 		tweets.addAll(tweets2);
-		
+
 		return tweets.stream()
-			.filter(status -> status.getGeoLocation() != null)
-			.map(status -> {
+				.filter(status -> status.getGeoLocation() != null)
+				.map(status -> {
 					GeoLocation loc =  status.getGeoLocation();
 					GeoMessage post = new GeoMessage();
 					post.setScreenName(status.getUser().getScreenName());
 					post.setText(status.getText());
 					post.setLatitude(loc.getLatitude());
 					post.setLongitude(loc.getLongitude());
-					
+
 					UserMentionEntity[] mentions = status.getUserMentionEntities();
 					for(int i = 0; i < mentions.length; i++){
 						post.addMention(mentions[i].getScreenName());
@@ -172,10 +176,10 @@ public class TwitterLookupService extends TwitterService{
 					post.setImg(status.getUser().getMiniProfileImageURL());
 					post.setSharedCount(status.getRetweetCount());
 					post.setLikesCount(status.getFavoriteCount());
-					
+
 					return post;
 				})
-			.collect(Collectors.toList());
+				.collect(Collectors.toList());
 	}
 }
 
