@@ -3,11 +3,14 @@ var twitterSubscription = null
 var facebookSubscription = null;
 var dict = {};
 var politicalParty;
+var map;
+var marker;
 
 $(document).ready(function() {
 	if(window.location.hash) {
 		politicalParty = window.location.hash.substring(1);
 		displayPoliticalParty();
+		showMap();
 	}
 	connect();
 	$(".party").click(changePoliticalParty);
@@ -327,10 +330,31 @@ function localizacionSede(location){
 			'&region=es',function(data){
 		var lat = data.results[0].geometry.location.lat;
 		var lng = data.results[0].geometry.location.lng;
+		map.removeLayer(marker);
+		map.setView([lat, lng], 13);
 		
-		var map = L.map('map').setView([lat, lng], 13);
-		var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-		L.tileLayer(osmUrl, {minZoom: 8, maxZoom: 18,}).addTo(map);
-		var marker = L.marker([lat, lng]).addTo(map);
+		marker = L.marker([lat, lng]).addTo(map);
+		var partido;
+		if(politicalParty == "pp"){
+			partido = "Partido Popular";
+		}
+		else if( politicalParty == "psoe"){
+			partido = "Partido Socialista";
+		}
+		else if(politicalParty == "podemos"){
+			partido = "Podemos";
+		}
+		else{
+			partido = "Ciudadanos";
+		}
+		marker.bindPopup("<b>Sede Central de "+String(partido)+"</b><br>"+
+				String(direccion)).openPopup();
 	});
+}
+
+function showMap(){
+	map = L.map('map').setView([40.46366700000001, -3.7492200000000366], 5);
+	var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+	L.tileLayer(osmUrl, {minZoom: 5, maxZoom: 18,}).addTo(map);
+	marker = L.marker([40.46366700000001, -3.7492200000000366]).addTo(map);
 }

@@ -77,7 +77,7 @@ public class TwitterLookupService extends TwitterService{
 					.compare(e1.getFavoriteCount(), e2.getFavoriteCount());
 			tweets = tweets.stream().sorted(byFav.reversed()).collect(Collectors.toList());
 		}
-		return tweets;
+		return eliminarDuplicados(tweets);
 	}
 
 	public String getQuery(Filter filter){
@@ -180,6 +180,10 @@ public class TwitterLookupService extends TwitterService{
 					return post;
 				})
 				.collect(Collectors.toList());
+	}
+	
+	public List<Tweet> eliminarDuplicados(List<Tweet> tweets){
+		return tweets;
 	}
 }
 
