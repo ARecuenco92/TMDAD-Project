@@ -39,9 +39,18 @@ function search(event){
 				Mustache.parse(template); 
 				var rendered = Mustache.render(template, data);
 				$('#results').html(rendered);
+				moveToResults();
 			}
 		});
 	}
+}
+
+function moveToResults(){
+	var offset = $('#results').offset(); 
+	offset.top -= 60;
+	$('html, body').animate({
+	    scrollTop: offset.top,
+	});
 }
 
 function setMap(){
