@@ -180,6 +180,7 @@ function facebookSubscribe(party){
 }
 
 function fullParty(){
+	var direccion;
 	var p;
 	if(politicalParty == "pp"){
 		p = "pp";
@@ -197,7 +198,9 @@ function fullParty(){
 		var template = $('#partyInfoBlock').html();
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, data);
-		$('#partyInfo').html(rendered)
+		$('#partyInfo').html(rendered);
+		localizacionSede(data.location);
+		
 	});
 }
 
@@ -276,7 +279,7 @@ function setChartParty(){
 	});
 }
 
-function getDoughnut(segPodemos,segPp,segPsoe,segCiudadanos){
+function getDoughnut(){
 	var podemos = {
 			color:"rgba(106,32,95, 0.7)",
 			highlight: "rgba(106,32,95, 1)",
@@ -317,3 +320,20 @@ function getDoughnut(segPodemos,segPp,segPsoe,segCiudadanos){
 	});
 }
 
+function localizacionSede(location){
+	//obtengo las coordenadas con peticion get a la api de google_maps
+	var direccion = location.city +','+ location.street +','+ location.country;
+	$.get('http://maps.google.com/maps/api/geocode/json?address='+direccion+'&sensor=false'+
+			'&region=es',function(data){
+		var lat = data.results[0].geometry.location.lat;
+		var lng = data.results[0].geometry.location.lng;
+		
+		var map = L.map('map').setView([lat, lng], 13);
+		var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+		L.tileLayer(osmUrl, {maxZoom: 18,}).addTo(map);
+		var marker = L.marker([lat, lng]).addTo(map);
+		//var osm = new L.TileLayer(osmUrl, {minZoom: 13, maxZoom: 13});		
+		//map.addLayer(osm);
+		map.dragging.disable();
+	});
+}
