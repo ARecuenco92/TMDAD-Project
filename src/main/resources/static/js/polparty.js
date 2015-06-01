@@ -37,7 +37,6 @@ function displayPoliticalParty(){
 	clear();
 	setupDial();
 	fullParty();
-	getDoughnut();
 	setChartParty();
 	setupTimeline();
 }
@@ -202,8 +201,8 @@ function fullParty(){
 		Mustache.parse(template); 
 		var rendered = Mustache.render(template, data);
 		$('#partyInfo').html(rendered);
+		getDoughnut();
 		localizacionSede(data.location);
-		
 	});
 }
 
