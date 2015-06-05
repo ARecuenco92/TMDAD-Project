@@ -35,6 +35,7 @@ function search(event){
 			method: "POST",
 			contentType : "application/json; charset=utf-8",
 			success: function(data) {
+				data = eliminarDuplicados(data);
 				var template = $('#twitterMsn').html();
 				Mustache.parse(template); 
 				var rendered = Mustache.render(template, data);
@@ -80,4 +81,41 @@ function removeGeo(event){
 		map.removeLayer(circle);
 		circle = undefined;
 	}
+}
+
+function eliminarDuplicados(data){
+	var tweets = [];
+	var i;
+	for (i = 0; i < data.length; ++i) {
+    	var j;
+    	var repetido = false;
+    	for(j = 0;j<tweets.length && !repetido;j++){
+    		if(data[i].retweet == true && tweets[j].retweet == true){
+    			if(tweets[j].retweetedStatus.id == data[i].retweetedStatus.id){
+    				repetido = true;
+    			}
+    			else if(tweets[j].id == data[i].retweetedStatus.id ){
+        			repetido = true;
+        		}
+    			else if(tweets[j].retweetedStatus.id == data[i].id ){
+        			repetido = true;
+        		}
+    		}
+    		else if(data[i].retweet == false && tweets[j].retweet == true){
+    			if(tweets[j].retweetedStatus.id == data[i].id){
+    				repetido = true;
+    			}
+    		}
+    		else if(data[i].retweet == true && tweets[j].retweet == false){
+    			if(tweets[j].id == data[i].retweetedStatus.id){
+    				repetido = true;
+    			}
+    		}
+    	}
+    	if(repetido == false){
+    		tweets.push(data[i]);
+    	}
+	    
+	}
+	return tweets;
 }
