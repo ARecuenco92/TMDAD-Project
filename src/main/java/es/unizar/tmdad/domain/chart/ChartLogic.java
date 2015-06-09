@@ -24,7 +24,7 @@ public class ChartLogic {
 			float first = dataSet.get(0);
 			int size = dataSet.size();
 			
-			for(int i = 7; i < size; i+=7){
+			for(int i = 0; i < size; i++){
 				newData.add(dataSet.get(i)-first);
 				newLabels.add(labels.get(i));
 			}
@@ -46,7 +46,7 @@ public class ChartLogic {
 			float first = dataSet.get(0);
 			int size = dataSet.size();
 			
-			for(int i = 7; i < size; i+=7){
+			for(int i = 0; i < size; i++){
 				newData.add((dataSet.get(i)/first-1)*100);
 				newLabels.add(labels.get(i));
 			}
@@ -65,7 +65,7 @@ public class ChartLogic {
 			List<Float> dataSet = data.getDataSet();
 			float lastDay = dataSet.get(0);
 			int size = dataSet.size();
-			for(int i = size-1; i > 0; i--){
+			for(int i = 0; i < size; i++){
 				lastDay = dataSet.get(i-1);
 				dataSet.set(i, (dataSet.get(i) - lastDay));
 			}
@@ -102,7 +102,7 @@ public class ChartLogic {
 			float first = dataSet.get(0);
 			int size = dataSet.size();
 			
-			for(int i = 7; i < size; i+=7){
+			for(int i = 0; i < size; i++){
 				newData.add(dataSet.get(i)-first);
 				newLabels.add(labels.get(i));
 			}
